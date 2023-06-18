@@ -1,11 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import usersReducer from './slices/userSlice';
+import optionsReducer from './slices/optionsSlice';
+import uiControlReducer from './slices/uiControlSlice';
+import usersReducer from './slices/usersSlice';
+import projectReducer from './slices/projectSlice';
 
 const store = configureStore({
   reducer: {
     users: usersReducer,
+    uiControl: uiControlReducer,
+    options: optionsReducer,
+    project: projectReducer,
   },
 });
 

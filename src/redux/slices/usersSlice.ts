@@ -3,6 +3,7 @@ import { usersThunk } from 'redux/thunks/userThunk';
 import { USER_LOGIN } from 'util/constants/settingSystem';
 import storage from 'util/storage';
 
+// signin
 export type UserLogin = {
   id: number;
   email: string;
@@ -12,16 +13,24 @@ export type UserLogin = {
   accessToken: string;
 };
 
+// getUser
+export type User = {
+  userId: number;
+  name: string;
+  avatar: string;
+  email: string;
+  phoneNumber: string;
+};
+
 export type UsersState = {
   userLogin: UserLogin | undefined;
-  //   getUser: [];
+  getUserList: User[];
   //   getUserByProjectId: [];
 };
 
-// First approach: define the initial state using that type
 const initialState: UsersState = {
   userLogin: storage.getStorageJson(USER_LOGIN),
-  //   getUser: [],
+  getUserList: [],
   //   getUserByProjectId: [],
 };
 
@@ -31,10 +40,20 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Sign In
-      .addCase(usersThunk.signIn.fulfilled, (state: UsersState, { payload: userLogin }: PayloadAction<UserLogin>) => {
-        state.userLogin = userLogin;
-      });
+      // signIn
+      .addCase(
+        usersThunk.signIn.fulfilled,
+        (state: UsersState, { payload: newUserLogin }: PayloadAction<UserLogin>) => {
+          state.userLogin = newUserLogin;
+        }
+      )
+      // getUser
+      .addCase(
+        usersThunk.getuser.fulfilled,
+        (state: UsersState, { payload: newGetUserList }: PayloadAction<User[]>) => {
+          state.getUserList = newGetUserList;
+        }
+      );
   },
 });
 

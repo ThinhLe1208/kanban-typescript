@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'util/constants/settingSystem';
 
 import { toast } from 'react-toastify';
-import { UserLogin } from 'redux/slices/userSlice';
+import { UserLogin } from 'redux/slices/usersSlice';
 import storage from 'util/storage';
 import styles from './styles.module.scss';
 

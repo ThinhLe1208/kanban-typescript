@@ -1,21 +1,22 @@
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { faBell, faMessage } from '@fortawesome/free-regular-svg-icons';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Badge, Button, Popover } from 'antd';
 import { useSelector } from 'react-redux';
 
-import styles from './styles.module.scss';
-// import { setSidebar } from 'redux/reducers/uiControlReducer';
 import UserPopover from 'components/UserPopover';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { UsersState } from 'redux/slices/userSlice';
+import { UiControlState, setSidebar } from 'redux/slices/uiControlSlice';
+import { UsersState } from 'redux/slices/usersSlice';
+import styles from './styles.module.scss';
 
 type Props = {};
 
 const Header = (props: Props) => {
-  const dispatch = useAppDispatch();
-  // const { isCollapsed } = useSelector((state) => state.uiControlReducer);
+  const { isCollapsed }: UiControlState = useSelector((state: RootState) => state.uiControl);
   const { userLogin }: UsersState = useSelector((state: RootState) => state.users);
+  const dispatch = useAppDispatch();
 
   return (
     <div className={styles.headerWrapper}>
@@ -23,8 +24,8 @@ const Header = (props: Props) => {
         <Button
           className={styles.sidebarBtn + ' ' + styles.iconBtn}
           type='text'
-          // icon={isCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          // onClick={() => dispatch(setSidebar())}
+          icon={isCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={() => dispatch(setSidebar())}
         />
       </div>
 

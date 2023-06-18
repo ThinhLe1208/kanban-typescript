@@ -2,51 +2,45 @@ import { ClusterOutlined, FileAddOutlined, LayoutOutlined, SettingOutlined } fro
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/configureStore';
+import { UiControlState } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
-  // const { isCollapsed } = useSelector((state) => state.uiControlReducer);
-  const [selectedItem, setSelectedItem] = useState('board');
+  const { isCollapsed }: UiControlState = useSelector((state: RootState) => state.uiControl);
+  const [selectedMenuItem, setSelectedMenuItem] = useState('board');
   const href = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedItem(href.pathname.split('/')[2]);
+    setSelectedMenuItem(href.pathname.split('/')[2]);
   }, [href]);
 
   const itemsTop: MenuProps['items'] = [
-    { label: 'Project board', key: 'board', icon: <LayoutOutlined className={styles.icon} /> },
-    { label: 'Create project', key: 'create', icon: <FileAddOutlined className={styles.icon} /> },
-    { label: 'Project management', key: 'management', icon: <ClusterOutlined className={styles.icon} /> },
+    {
+      label: <Link to='/project/board/1'>Project board</Link>,
+      key: 'board',
+      icon: <LayoutOutlined className={styles.icon} />,
+    },
+    {
+      label: <Link to='/project/create'>Create project</Link>,
+      key: 'create',
+      icon: <FileAddOutlined className={styles.icon} />,
+    },
+    {
+      label: <Link to='/project/management'>Project management</Link>,
+      key: 'management',
+      icon: <ClusterOutlined className={styles.icon} />,
+    },
   ];
 
   const itemsBottom: MenuProps['items'] = [
     { label: 'Options', key: 'options', icon: <SettingOutlined className={styles.icon} /> },
   ];
-
-  const handleClickMenuItem: MenuProps['onClick'] = (e) => {
-    switch (e.key) {
-      case 'board': {
-        navigate('board/12464');
-        break;
-      }
-      case 'create': {
-        navigate('create');
-        break;
-      }
-      case 'management': {
-        navigate('management');
-        break;
-      }
-      default: {
-        console.warn('Default handleClickMenuItem');
-      }
-    }
-  };
 
   return (
     <div className={styles.sidebarWrapper}>
@@ -56,7 +50,7 @@ const Sidebar = (props: Props) => {
         width={210}
         trigger={null}
         collapsible
-        // collapsed={isCollapsed}
+        collapsed={isCollapsed}
         style={{
           transition: 'all ease 0.2s',
         }}
@@ -71,16 +65,14 @@ const Sidebar = (props: Props) => {
           <Menu
             mode='inline'
             items={itemsTop}
-            selectedKeys={[selectedItem]}
-            onClick={handleClickMenuItem}
+            selectedKeys={[selectedMenuItem]}
             style={{ border: 'none' }}
           />
 
           <Menu
             mode='inline'
             items={itemsBottom}
-            selectedKeys={[selectedItem]}
-            onClick={handleClickMenuItem}
+            selectedKeys={[selectedMenuItem]}
             style={{ border: 'none' }}
           />
         </div>

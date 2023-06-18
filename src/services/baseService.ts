@@ -5,12 +5,12 @@ import { ACCESS_TOKEN, DOMAIN, TOKEN_CYBER, TOKEN_CYBER_HEADER } from 'util/cons
 import history from 'util/history';
 import storage from 'util/storage';
 
-export const http = axios.create({
+export const https = axios.create({
   baseURL: DOMAIN,
   timeout: 30000,
 });
 
-http.interceptors.request.use(
+https.interceptors.request.use(
   (config) => {
     const isLogin = storage.checkLogin();
     if (isLogin) {
@@ -25,7 +25,7 @@ http.interceptors.request.use(
   }
 );
 
-http.interceptors.response.use(
+https.interceptors.response.use(
   (response) => {
     return response;
   },
