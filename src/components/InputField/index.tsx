@@ -7,14 +7,13 @@ import ErrorMessage from 'components/ErrorMessage';
 type Props = {
   label?: string;
   name: string;
-  value: string;
+  value: string | undefined;
   error: string | undefined;
   touched: boolean | undefined;
   placeholder?: string;
   type?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onBlur: ChangeEventHandler<HTMLInputElement>;
-  rest?: any[];
 };
 
 const InputField = ({
@@ -27,7 +26,6 @@ const InputField = ({
   type = 'text',
   onChange,
   onBlur,
-  ...rest
 }: Props) => {
   return (
     <div className={styles.inputFieldWrapper}>
@@ -48,7 +46,6 @@ const InputField = ({
         onBlur={onBlur}
         status={error && touched ? 'error' : ''}
         style={{ width: '100%' }}
-        {...rest}
       />
       {error && touched && <ErrorMessage content={error} />}
     </div>

@@ -2,9 +2,9 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { projectThunk } from 'redux/thunks/projectThunk';
 
-export type Project = {
-  members: Member[];
-  creator: Creator;
+export type ProjectModel = {
+  members: MemberModel[];
+  creator: CreatorModel;
   id: number;
   projectName: string;
   description: string;
@@ -14,41 +14,47 @@ export type Project = {
   deleted: boolean;
 };
 
-export type Creator = {
+export type CreatorModel = {
   id: number;
   name: string;
 };
 
-export type Member = {
+export type MemberModel = {
   userId: number;
   name: string;
   avatar: string;
 };
 
-export type ProjectState = {
-  projectList: Project[];
-};
+export interface ProjectState {
+  projectList: ProjectModel[];
+  projectEdit: ProjectModel | undefined;
+}
 
-const initialState: ProjectState = {
+const initialState = {
   projectList: [],
-};
+  projectEdit: undefined,
+} as ProjectState;
 
 const projectSlice = createSlice({
   name: 'project',
   initialState,
-  reducers: {},
+  reducers: {
+    setProjectEdit: (state: ProjectState, { payload: newProjectEdit }: PayloadAction<ProjectModel>) => {
+      state.projectEdit = newProjectEdit;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // getAllProject
       .addCase(
         projectThunk.getAllProject.fulfilled,
-        (state: ProjectState, { payload: newProjectList }: PayloadAction<Project[]>) => {
+        (state, { payload: newProjectList }: PayloadAction<ProjectModel[]>) => {
           state.projectList = newProjectList;
         }
       );
   },
 });
 
-// export const {} = projectSlice.actions;
+export const { setProjectEdit } = projectSlice.actions;
 
 export default projectSlice.reducer;

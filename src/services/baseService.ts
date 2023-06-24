@@ -30,20 +30,26 @@ https.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log('Base service error:', error);
+
     if (error?.response?.status === 401 || error?.response?.status === 403) {
       const isLogin = storage.checkLogin();
       if (!isLogin) {
         toast.error('You must log in first.', { toastId: 'login request' });
         history.push('/signin');
       }
+
+      toast.error("You don't have permission.", { toastId: '401/403' });
     }
+
     if (error.response?.status === 400 || error.response?.status === 404) {
-      if (error?.response?.data?.message === 'Email đã được sử dụng!') {
-        toast.error('The email has already been taken.', { toastId: 'duplicated email' });
-      } else {
-        toast.error('The data was not found.', { toastId: '400/404' });
-      }
+      toast.error('The data was not found.', { toastId: '400/404' });
     }
+
+    if (error.response?.status === 500) {
+      toast.error('Internal Server Error', { toastId: '500' });
+    }
+
     return Promise.reject(error);
   }
 );

@@ -4,29 +4,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Checkbox } from 'antd';
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import Card from 'components/Card';
 import InputField from 'components/InputField';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAppDispatch } from 'redux/configureStore';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { UserJiraLoginModel, usersThunk } from 'redux/thunks/userThunk';
 import { ACCESS_TOKEN, USER_LOGIN } from 'util/constants/settingSystem';
 import storage from 'util/storage';
 import styles from './styles.module.scss';
-
-type Props = {};
-
-export type SignInFormValues = {
-  email: string;
-  passWord: string;
-};
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email('Please provide an valid email.').required('Please provide an email.'),
   passWord: Yup.string().min(6, 'Please enter at least 6+ characters.').required('Please provide a password.'),
 });
+
+interface Props {}
 
 const SignIn = (props: Props) => {
   const [isRemember, setIsRemember] = useState(false);
@@ -40,16 +35,26 @@ const SignIn = (props: Props) => {
       passWord: '',
     },
     validationSchema: SignInSchema,
-    onSubmit: async (values: SignInFormValues) => {
+    onSubmit: async (values: UserJiraLoginModel) => {
       try {
         const response = await dispatch(usersThunk.signIn(values)).unwrap();
         storage.setStorageJson(USER_LOGIN, response);
-        storage.setStorageJson(ACCESS_TOKEN, response.accessToken);
+        storage.setStorageJson(ACCESS_TOKEN, response?.accessToken);
         storage.setCookieJson(USER_LOGIN, response, 30);
         toast.success('Sign in successfully.');
         navigate('/project/management');
       } catch (err) {
-        toast.error('Failed to sign in.');
+        if (typeof err === 'string') {
+          if (err === 'Email không tồn tại !') {
+            toast.error('Email does not exist.');
+          } else if (err === 'Tài khoản hoặc mật khẩu không đúng !') {
+            toast.error('Incorrect email or password.');
+          } else {
+            toast.error(err);
+          }
+        } else {
+          toast.error('Failed to sign in.');
+        }
       }
     },
   });

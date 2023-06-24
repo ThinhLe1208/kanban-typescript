@@ -1,12 +1,41 @@
+import { ProjectInsertModel, ProjectUpdateModel, UserProjectModel } from 'redux/thunks/projectThunk';
 import { https } from './baseService';
 
 class ProjectService {
+  createProjectAuthorize = (projectInsert: ProjectInsertModel) => {
+    let url = '/api/Project/createProjectAuthorize';
+    return https.post(url, projectInsert);
+  };
+
   getAllProject = (keyword: string | undefined) => {
     let url = '/api/Project/getAllProject';
     if (keyword) {
       url = `/api/Project/getAllProject?keyword=${keyword}`;
     }
     return https.get(url);
+  };
+
+  deleteProject = (projectId: number | undefined) => {
+    let url = '/api/Project/deleteProject';
+    if (projectId) {
+      url = `/api/Project/deleteProject?projectId=${projectId}`;
+    }
+    return https.delete(url);
+  };
+
+  updateProject = (projectUpdate: ProjectUpdateModel) => {
+    let url = `/api/Project/updateProject?projectId=${projectUpdate.id}`;
+    return https.put(url, projectUpdate);
+  };
+
+  assignUserProject = (project: UserProjectModel) => {
+    let url = '/api/Project/assignUserProject';
+    return https.post(url, project);
+  };
+
+  removeUserFromProject = (project: UserProjectModel) => {
+    let url = '/api/Project/removeUserFromProject';
+    return https.post(url, project);
   };
 }
 

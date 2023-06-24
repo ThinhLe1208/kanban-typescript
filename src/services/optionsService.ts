@@ -9,11 +9,20 @@ class OptionsService {
     return https.get(url);
   };
 
-  getAllProjectCategory = () => https.get('/api/ProjectCategory');
+  getAllProjectCategory = () => {
+    let url = '/api/ProjectCategory';
+    return https.get(url);
+  };
 
-  getAllStatus = () => https.get('/api/Status/getAll');
+  getAllStatus = () => {
+    let url = '/api/Status/getAll';
+    return https.get(url);
+  };
 
-  getAllTaskType = () => https.get('/api/TaskType/getAll');
+  getAllTaskType = () => {
+    let url = '/api/TaskType/getAll';
+    return https.get(url);
+  };
 }
 
 export const optionsService = new OptionsService();

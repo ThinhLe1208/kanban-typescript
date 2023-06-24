@@ -1,14 +1,14 @@
 import { Layout } from 'antd';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
-import styles from './styles.module.scss';
 import { useAppDispatch } from 'redux/configureStore';
-import { useEffect } from 'react';
 import { optionsThunk } from 'redux/thunks/optionsThunk';
+import styles from './styles.module.scss';
 
-type Props = {};
+interface Props {}
 
 const ProjectTemplate = (props: Props) => {
   const dispatch = useAppDispatch();

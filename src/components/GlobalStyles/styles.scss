@@ -162,34 +162,12 @@ html ::-webkit-scrollbar-track {
   font-size: 14px;
 }
 
-// antd-react notification
-.notification {
-  display: flex !important;
-  justify-content: space-between !important;
-  color: var(--text-primary) !important;
-  font-family: var(--font-family) !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-  border-radius: 4px !important;
-  box-shadow: var(--box-shadow-1) !important;
-  padding: 12px 16px !important;
-  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important;
-  z-index: 9999 !important;
+// ---------- toastify library ---------
 
-  align-items: center !important;
+.Toastify__toast-container {
+  line-height: 1.4;
+}
 
-  .ant-notification-notice-with-icon {
-    .ant-notification-notice-message {
-      color: var(--text-primary) !important;
-      margin-bottom: 0 !important;
-    }
-  }
-
-  .ant-notification-notice-close {
-    position: relative !important;
-    top: 0 !important;
-    inset-inline-end: 0 !important;
-    color: var(--text-primary) !important;
-    font-weight: 500 !important;
-  }
+.Toastify__toast-container--top-center {
+  top: 56px !important;
 }

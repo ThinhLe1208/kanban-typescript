@@ -3,24 +3,15 @@ import { faApple, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'antd';
 import { useFormik } from 'formik';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import Card from 'components/Card';
 import InputField from 'components/InputField';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAppDispatch } from 'redux/configureStore';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { UserJiraModel, usersThunk } from 'redux/thunks/userThunk';
 import styles from './styles.module.scss';
-
-type Props = {};
-
-export type SignUpFormValues = {
-  name: string;
-  email: string;
-  passWord: string;
-  phoneNumber: string;
-};
 
 const SignUpSchema = Yup.object().shape({
   name: Yup.string()
@@ -32,6 +23,8 @@ const SignUpSchema = Yup.object().shape({
     .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, 'Please provide a valid phone number.')
     .required('Please provide a phone number.'),
 });
+
+interface Props {}
 
 const SignUp = (props: Props) => {
   const dispatch = useAppDispatch();
@@ -46,13 +39,21 @@ const SignUp = (props: Props) => {
       phoneNumber: '',
     },
     validationSchema: SignUpSchema,
-    onSubmit: async (values: SignUpFormValues) => {
+    onSubmit: async (values: UserJiraModel) => {
       try {
         await dispatch(usersThunk.signUp(values)).unwrap();
         toast.success('Sign up successfully.');
         navigate('/signin');
       } catch (err) {
-        toast.error('Failed to sign up.');
+        if (typeof err === 'string') {
+          if (err === 'Email đã được sử dụng!') {
+            toast.error('The email has already been taken.');
+          } else {
+            toast.error(err);
+          }
+        } else {
+          toast.error('Failed to sign up.');
+        }
       }
     },
   });
@@ -112,7 +113,7 @@ const SignUp = (props: Props) => {
             <InputField
               label='Phone Number'
               name='phoneNumber'
-              type='phoneNumber'
+              type='tel'
               value={values.phoneNumber}
               error={errors.phoneNumber}
               touched={touched.phoneNumber}

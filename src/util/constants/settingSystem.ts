@@ -8,3 +8,6 @@ export const TOKEN_CYBER =
 export const ACCESS_TOKEN = 'ACCESS_TOKEN';
 export const USER_LOGIN = 'USER_LOGIN';
 export const REMEMBER_USER = 'REMEMBER_ME';
+
+// TinyMCE
+export const TINY_KEY = '64iv1bamj3ly5fr482iq34ud6xb2ebvhmf30hyzbx11eauzq';

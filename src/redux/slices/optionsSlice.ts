@@ -1,7 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { optionsThunk } from 'redux/thunks/optionsThunk';
 
-export type Priority = {
+// getPriority
+export type PriorityModel = {
+  [key: string]: string | number | boolean;
   priorityId: number;
   priority: string;
   description: string;
@@ -9,36 +11,42 @@ export type Priority = {
   alias: string;
 };
 
-export type ProjectCategory = {
+// getAllProjectCategory
+export type ProjectCategoryModel = {
+  [key: string]: string | number;
   id: number;
   projectCategoryName: string;
 };
 
-export type Status = {
+// getAllStatus
+export type StatusModel = {
+  [key: string]: string;
   statusId: string;
   statusName: string;
   alias: string;
   deleted: string;
 };
 
-export type TaskType = {
+// getAllTaskType
+export type TaskTypeModel = {
+  [key: string]: string | number;
   id: number;
   taskType: string;
 };
 
-export type OptionsState = {
-  priorityList: Priority[];
-  projectCategoryList: ProjectCategory[];
-  statusList: Status[];
-  taskTypeList: TaskType[];
-};
+export interface OptionsState {
+  priorityList: PriorityModel[];
+  projectCategoryList: ProjectCategoryModel[];
+  statusList: StatusModel[];
+  taskTypeList: TaskTypeModel[];
+}
 
-const initialState: OptionsState = {
+const initialState = {
   priorityList: [],
   projectCategoryList: [],
   statusList: [],
   taskTypeList: [],
-};
+} as OptionsState;
 
 const optionsSlice = createSlice({
   name: 'options',
@@ -47,33 +55,21 @@ const optionsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // getPriority
-      .addCase(
-        optionsThunk.getPriority.fulfilled,
-        (state: OptionsState, { payload: newPriorityList }: PayloadAction<Priority[]>) => {
-          state.priorityList = newPriorityList;
-        }
-      )
+      .addCase(optionsThunk.getPriority.fulfilled, (state, { payload: newPriorityList }) => {
+        state.priorityList = newPriorityList;
+      })
       // getAllProjectCategory
-      .addCase(
-        optionsThunk.getAllProjectCategory.fulfilled,
-        (state: OptionsState, { payload: newProjectCategoryList }: PayloadAction<ProjectCategory[]>) => {
-          state.projectCategoryList = newProjectCategoryList;
-        }
-      )
+      .addCase(optionsThunk.getAllProjectCategory.fulfilled, (state, { payload: newProjectCategoryList }) => {
+        state.projectCategoryList = newProjectCategoryList;
+      })
       // getAllStatus
-      .addCase(
-        optionsThunk.getAllStatus.fulfilled,
-        (state: OptionsState, { payload: newStatusList }: PayloadAction<Status[]>) => {
-          state.statusList = newStatusList;
-        }
-      )
+      .addCase(optionsThunk.getAllStatus.fulfilled, (state, { payload: newStatusList }) => {
+        state.statusList = newStatusList;
+      })
       // getAllTaskType
-      .addCase(
-        optionsThunk.getAllTaskType.fulfilled,
-        (state: OptionsState, { payload: newTaskTypeList }: PayloadAction<TaskType[]>) => {
-          state.taskTypeList = newTaskTypeList;
-        }
-      );
+      .addCase(optionsThunk.getAllTaskType.fulfilled, (state, { payload: newTaskTypeList }) => {
+        state.taskTypeList = newTaskTypeList;
+      });
   },
 });
 

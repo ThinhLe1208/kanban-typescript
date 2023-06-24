@@ -1,12 +1,12 @@
-import { FC } from 'react';
+import React from 'react';
 
-import './styles.module.scss';
+import './styles.scss';
 
 type Props = {
   children: JSX.Element;
 };
 
-const GlobalStyles: FC<Props> = ({ children }: Props) => {
+const GlobalStyles: React.FC<Props> = ({ children }: Props) => {
   return children;
 };
 

@@ -1,10 +1,11 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
 import { usersThunk } from 'redux/thunks/userThunk';
 import { USER_LOGIN } from 'util/constants/settingSystem';
 import storage from 'util/storage';
 
 // signin
-export type UserLogin = {
+export type UserLoginModel = {
   id: number;
   email: string;
   avatar: string;
@@ -22,17 +23,17 @@ export type User = {
   phoneNumber: string;
 };
 
-export type UsersState = {
-  userLogin: UserLogin | undefined;
+export interface UsersState {
+  userLogin: UserLoginModel | undefined;
   getUserList: User[];
   //   getUserByProjectId: [];
-};
+}
 
-const initialState: UsersState = {
+const initialState = {
   userLogin: storage.getStorageJson(USER_LOGIN),
   getUserList: [],
   //   getUserByProjectId: [],
-};
+} as UsersState;
 
 const usersSlice = createSlice({
   name: 'users',
@@ -41,19 +42,13 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // signIn
-      .addCase(
-        usersThunk.signIn.fulfilled,
-        (state: UsersState, { payload: newUserLogin }: PayloadAction<UserLogin>) => {
-          state.userLogin = newUserLogin;
-        }
-      )
+      .addCase(usersThunk.signIn.fulfilled, (state, { payload: newUserLogin }) => {
+        state.userLogin = newUserLogin;
+      })
       // getUser
-      .addCase(
-        usersThunk.getuser.fulfilled,
-        (state: UsersState, { payload: newGetUserList }: PayloadAction<User[]>) => {
-          state.getUserList = newGetUserList;
-        }
-      );
+      .addCase(usersThunk.getuser.fulfilled, (state, { payload: newGetUserList }) => {
+        state.getUserList = newGetUserList;
+      });
   },
 });
 

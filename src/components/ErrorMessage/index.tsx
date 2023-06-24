@@ -8,7 +8,7 @@ type Props = {
 
 const ErrorMessage = ({ content }: Props) => {
   return (
-    <div className={styles.Wrapper}>
+    <div className={styles.errorMessageWrapper}>
       <p className={styles.content}>{content}</p>
     </div>
   );

@@ -1,50 +1,24 @@
-import {
-  CloseCircleOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-  SearchOutlined,
-} from '@ant-design/icons';
-import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SearchOutlined } from '@ant-design/icons';
 import type { InputRef } from 'antd';
-import { AutoComplete, Avatar, Button, Input, Popconfirm, Popover, Space, Table, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Input, Space, Table, Tag, Tooltip } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
-import Card from 'components/Card';
-import Heading from 'components/Heading';
 import parse from 'html-react-parser';
-import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import Card from 'components/Card';
+import Heading from 'components/Heading';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { OptionsState } from 'redux/slices/optionsSlice';
-import { Member, ProjectState } from 'redux/slices/projectSlice';
-import { UsersState } from 'redux/slices/usersSlice';
+import { ProjectModel, ProjectState } from 'redux/slices/projectSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
-import { usersThunk } from 'redux/thunks/userThunk';
+import TableActions from './components/TableActions';
 import styles from './styles.module.scss';
 
-interface memeberDataType {
-  id: number;
-  avatar: string;
-  title: string;
-  action: any;
-}
-
-interface DataType {
-  id: number;
-  projectName: string;
-  categoryName: string;
-  categoryId: number;
-  description: string;
-  members: Member[];
-}
-
-type DataIndex = keyof DataType;
+type DataIndex = keyof ProjectModel;
 
 const breadCrumbList = [
   { href: '/', title: 'Home' },
@@ -55,30 +29,18 @@ const breadCrumbList = [
 type Props = {};
 
 const ProjectManagement = (props: Props) => {
-  const { getUserList }: UsersState = useSelector((state: RootState) => state.users);
   const { projectList }: ProjectState = useSelector((state: RootState) => state.project);
   const { projectCategoryList }: OptionsState = useSelector((state: RootState) => state.options);
   const dispatch = useAppDispatch();
 
-  // state support to the delete member button in the popup table
-  const [projectId, setProjectId] = useState(0);
-
-  // state of feature which searches and adds a member
-  const [searchValue, setSearchValue] = useState('');
-
-  // table antd library
+  // default state of a table antd library
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-  const searchRef = useRef(null);
 
   useEffect(() => {
     dispatch(projectThunk.getAllProject());
   }, [dispatch]);
-
-  const handleSearchMembers = _.debounce((value) => {
-    dispatch(usersThunk.getuser(value));
-  }, 500);
 
   // default handlers of a table antd library
   const handleSearch = (
@@ -90,11 +52,13 @@ const ProjectManagement = (props: Props) => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
     setSearchText('');
   };
-  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
+
+  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<ProjectModel> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div
         style={{ padding: 8 }}
@@ -172,43 +136,8 @@ const ProjectManagement = (props: Props) => {
       ),
   });
 
-  // Remove member table
-  const memberColumns: ColumnsType<Member> = [
-    {
-      title: 'ID',
-      dataIndex: 'userId',
-      key: 'userId',
-      render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: 'Avatar',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (text: string) => <Avatar src={text} />,
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      render: (text: string, record) => (
-        <Button
-          type='text'
-          icon={<CloseCircleOutlined style={{ color: 'var(--error)' }} />}
-          // fix
-          // onClick={() => dispatch(removeUserProjectSagaAction(projectId, record.userId))}
-        />
-      ),
-    },
-  ];
-
-  // Project management table
-  const columns: ColumnsType<DataType> = [
+  // project management table data
+  const columns: ColumnsType<ProjectModel> = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -307,7 +236,7 @@ const ProjectManagement = (props: Props) => {
       key: 'members',
       width: 150,
       responsive: ['lg'],
-      render: (text, record, index) => {
+      render: (_, record) => {
         return (
           <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}>
             {/* member avatar list */}
@@ -331,129 +260,11 @@ const ProjectManagement = (props: Props) => {
       },
     },
     {
-      title: 'Action',
+      title: 'Actions',
       dataIndex: '',
-      key: 'action',
+      key: 'actions',
       width: 200,
-      render: (text, record, index) => (
-        <Space>
-          {/* edit button */}
-          <Tooltip
-            title={'Edit Project'}
-            color='#00c292'
-            zIndex={5}
-          >
-            <Button
-              type='text'
-              icon={<EditOutlined style={{ color: 'var(--success)' }} />}
-              // fix
-              // onClick={() => {
-              //   // open drawer with edit content
-              //   dispatch(
-              //     setOffcanvas({
-              //       title: 'Edit Project',
-              //       icon: <EditOutlined />,
-              //       aceptBtn: 'Edit',
-              //       showBtn: true,
-              //       offcanvasContent: <EditProjectForm />,
-              //     })
-              //   );
-              //   // dispatch the editing project to store
-              //   dispatch(setProjectEdit(record));
-              // }}
-            />
-          </Tooltip>
-
-          {/* remove button */}
-          <Tooltip
-            title={'Delete project'}
-            color='#e46a76'
-            zIndex={5}
-          >
-            <Popconfirm
-              icon={
-                <FontAwesomeIcon
-                  icon={faCircleQuestion}
-                  style={{ color: '#e46a76' }}
-                />
-              }
-              title='Are you sure to remove this project?'
-              okText='Remove'
-              cancelText='Cancel'
-              okButtonProps={{ style: { background: '#e46a76' } }}
-              // fix
-              // onConfirm={() => dispatch(deleteProjectSagaAction(record.id))}
-            >
-              <Button
-                type='text'
-                icon={<DeleteOutlined style={{ color: 'var(--error)' }} />}
-              />
-            </Popconfirm>
-          </Tooltip>
-
-          {/* add member button */}
-          <Tooltip
-            title={'Add member'}
-            color='#03c9d7'
-            zIndex={5}
-          >
-            <Popover
-              content={() => (
-                <AutoComplete
-                  style={{
-                    width: '100%',
-                  }}
-                  options={getUserList.map((u) => ({ label: u.name, value: u.userId.toString() }))}
-                  value={searchValue}
-                  placeholder='Insert name'
-                  onChange={(keyword) => setSearchValue(keyword)}
-                  onSearch={handleSearchMembers}
-                  // fix
-                  // onSelect={(value, option) => {
-                  //   setSearchValue(option.label);
-                  //   dispatch(assignUserProjectSagaAction(record.id, Number(value)));
-                  // }}
-                />
-              )}
-              title='Add member'
-              trigger='click'
-            >
-              <Button
-                type='text'
-                icon={<PlusCircleOutlined style={{ color: 'var(--info)' }} />}
-              />
-            </Popover>
-          </Tooltip>
-
-          {/* remove member button */}
-          <Tooltip
-            title={'Remove member'}
-            color='#fec90f'
-            zIndex={5}
-          >
-            <Popover
-              placement='left'
-              content={() => (
-                <Card style={{ padding: '0' }}>
-                  <Table
-                    columns={memberColumns}
-                    dataSource={record.members}
-                    rowKey={'userId'}
-                    pagination={false}
-                  />
-                </Card>
-              )}
-              trigger='click'
-            >
-              <Button
-                type='text'
-                icon={<MinusCircleOutlined style={{ color: 'var(--warning)' }} />}
-                onClick={() => setProjectId(record.id)}
-              />
-            </Popover>
-          </Tooltip>
-        </Space>
-      ),
+      render: (_, record) => <TableActions project={record} />,
     },
   ];
 

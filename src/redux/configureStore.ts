@@ -13,6 +13,11 @@ const store = configureStore({
     options: optionsReducer,
     project: projectReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      // hide an error when states are components or functions in redux-toolkit store
+      serializableCheck: false, // works in the app, but doesn't in tests
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
