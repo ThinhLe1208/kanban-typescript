@@ -6,7 +6,6 @@ export interface UiControlState {
   isCollapsed: boolean;
   isOpen: boolean;
   offcanvasId: number | undefined;
-  handleSubmitOffcanvas: () => void;
 }
 
 const initialState = {
@@ -16,9 +15,6 @@ const initialState = {
   // the right offcanvas
   isOpen: false,
   offcanvasId: undefined,
-  handleSubmitOffcanvas: () => {
-    console.warn('Default handleSubmitOffcanvas');
-  },
 } as UiControlState;
 
 const uiControlSlice = createSlice({
@@ -45,12 +41,19 @@ const uiControlSlice = createSlice({
     setOffcanvas: (state, { payload: id }: PayloadAction<number>) => {
       state.offcanvasId = id;
     },
-    setHandleSubmitOffcanvas: (state, { payload: newHandleSubmitOffcanvas }: PayloadAction<() => void>) => {
-      state.handleSubmitOffcanvas = newHandleSubmitOffcanvas;
-    },
   },
   extraReducers: (builder) => {
     builder
+      // getProjectDetail
+      .addCase(projectThunk.getProjectDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(projectThunk.getProjectDetail.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(projectThunk.getProjectDetail.rejected, (state) => {
+        state.isLoading = false;
+      })
       // getAllProject
       .addCase(projectThunk.getAllProject.pending, (state) => {
         state.isLoading = true;
@@ -61,33 +64,26 @@ const uiControlSlice = createSlice({
       .addCase(projectThunk.getAllProject.rejected, (state) => {
         state.isLoading = false;
       })
-      // deleteProject
+      // deleteProject + getAllProject
       .addCase(projectThunk.deleteProject.pending, (state) => {
         state.isLoading = true;
       })
-      // updateProject
+      // updateProject + getAllProject
       .addCase(projectThunk.updateProject.pending, (state) => {
         state.isLoading = true;
       })
-      // assignUserProject
+      // assignUserProject + getAllProject
       .addCase(projectThunk.assignUserProject.pending, (state) => {
         state.isLoading = true;
       })
-      // removeUserFromProject
+      // removeUserFromProject + getAllProject
       .addCase(projectThunk.removeUserFromProject.pending, (state) => {
         state.isLoading = true;
       });
   },
 });
 
-export const {
-  showLoading,
-  hideLoading,
-  setSidebar,
-  showOffcanvas,
-  hideOffcanvas,
-  setOffcanvas,
-  setHandleSubmitOffcanvas,
-} = uiControlSlice.actions;
+export const { showLoading, hideLoading, setSidebar, showOffcanvas, hideOffcanvas, setOffcanvas } =
+  uiControlSlice.actions;
 
 export default uiControlSlice.reducer;

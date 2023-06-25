@@ -1,57 +1,38 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
+import { ProjectDetailModel, ProjectModel, ProjectUpdateModel } from 'models/projectModel';
 import { projectThunk } from 'redux/thunks/projectThunk';
-
-export type ProjectModel = {
-  members: MemberModel[];
-  creator: CreatorModel;
-  id: number;
-  projectName: string;
-  description: string;
-  categoryId: number;
-  categoryName: string;
-  alias: string;
-  deleted: boolean;
-};
-
-export type CreatorModel = {
-  id: number;
-  name: string;
-};
-
-export type MemberModel = {
-  userId: number;
-  name: string;
-  avatar: string;
-};
 
 export interface ProjectState {
   projectList: ProjectModel[];
-  projectEdit: ProjectModel | undefined;
+  projectEdit: ProjectUpdateModel | null;
+  projectDetail: ProjectDetailModel | null;
 }
 
 const initialState = {
   projectList: [],
-  projectEdit: undefined,
+  projectEdit: null,
+  projectDetail: null,
 } as ProjectState;
 
 const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    setProjectEdit: (state: ProjectState, { payload: newProjectEdit }: PayloadAction<ProjectModel>) => {
+    setProjectEdit: (state, { payload: newProjectEdit }) => {
       state.projectEdit = newProjectEdit;
     },
   },
   extraReducers: (builder) => {
     builder
       // getAllProject
-      .addCase(
-        projectThunk.getAllProject.fulfilled,
-        (state, { payload: newProjectList }: PayloadAction<ProjectModel[]>) => {
-          state.projectList = newProjectList;
-        }
-      );
+      .addCase(projectThunk.getAllProject.fulfilled, (state, { payload: newProjectList }) => {
+        state.projectList = newProjectList;
+      })
+      // getProjectDetail
+      .addCase(projectThunk.getProjectDetail.fulfilled, (state, { payload: newProjectDetail }) => {
+        state.projectDetail = newProjectDetail;
+      });
   },
 });
 

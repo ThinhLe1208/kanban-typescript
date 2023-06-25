@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { PriorityModel, ProjectCategoryModel, StatusModel, TaskTypeModel } from 'redux/slices/optionsSlice';
+import { PriorityModel, ProjectCategoryModel, StatusModel, TaskTypeModel } from 'models/optionsModel';
 import { optionsService } from 'services/optionsService';
 
 class OptionsThunk {

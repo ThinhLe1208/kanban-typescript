@@ -1,12 +1,12 @@
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Drawer, Space } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import OffcanvasTitle from 'components/OffcanvasTitle';
-// import ProjectEditForm from 'components/ProjectEditForm';
+import ProjectEditForm from 'pages/ProjectManagement/components/ProjectEditForm';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { UiControlState, hideOffcanvas } from 'redux/slices/uiControlSlice';
+import { hideOffcanvas } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
 
 interface offcanvasData {
@@ -20,10 +20,10 @@ interface offcanvasData {
 type Props = {};
 
 const Offcanvas = (props: Props) => {
-  const { isOpen, offcanvasId, handleSubmitOffcanvas }: UiControlState = useSelector(
-    (state: RootState) => state.uiControl
-  );
+  const { isOpen, offcanvasId } = useSelector((state: RootState) => state.uiControl);
   const dispatch = useAppDispatch();
+  const formRef = useRef<HTMLFormElement | null>(null);
+
   const [data, setData] = useState<offcanvasData>({
     title: 'Default title',
     icon: null,
@@ -40,8 +40,7 @@ const Offcanvas = (props: Props) => {
           icon: <EditOutlined />,
           showBtn: true,
           aceptBtnContent: 'Edit',
-          // offcanvasContent: <ProjectEditForm />,
-          offcanvasContent: <p>123</p>,
+          offcanvasContent: <ProjectEditForm ref={formRef} />,
         });
         break;
       default:
@@ -51,6 +50,12 @@ const Offcanvas = (props: Props) => {
 
   const handlehideOffcanvas = () => {
     dispatch(hideOffcanvas());
+  };
+
+  const handleSubmitOffcanvas = () => {
+    if (formRef.current) {
+      formRef.current.requestSubmit();
+    }
   };
 
   return (

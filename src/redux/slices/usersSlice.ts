@@ -1,27 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { User, UserLoginModel } from 'models/usersModel';
 import { usersThunk } from 'redux/thunks/userThunk';
-import { USER_LOGIN } from 'util/constants/settingSystem';
-import storage from 'util/storage';
-
-// signin
-export type UserLoginModel = {
-  id: number;
-  email: string;
-  avatar: string;
-  phoneNumber: string;
-  name: string;
-  accessToken: string;
-};
-
-// getUser
-export type User = {
-  userId: number;
-  name: string;
-  avatar: string;
-  email: string;
-  phoneNumber: string;
-};
+import { USER_LOGIN } from 'utils/constants/settingSystem';
+import storage from 'utils/storage';
 
 export interface UsersState {
   userLogin: UserLoginModel | undefined;

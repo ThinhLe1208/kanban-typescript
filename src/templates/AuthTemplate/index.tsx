@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import styles from './styles.module.scss';
-import { USER_LOGIN, REMEMBER_USER } from 'util/constants/settingSystem';
+import { USER_LOGIN, REMEMBER_USER } from 'utils/constants/settingSystem';
 
 type Props = {};
 

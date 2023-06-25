@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import { ACCESS_TOKEN, DOMAIN, TOKEN_CYBER, TOKEN_CYBER_HEADER } from 'util/constants/settingSystem';
-import history from 'util/history';
-import storage from 'util/storage';
+import { ACCESS_TOKEN, DOMAIN, TOKEN_CYBER, TOKEN_CYBER_HEADER } from 'utils/constants/settingSystem';
+import history from 'utils/history';
+import storage from 'utils/storage';
 
 export const https = axios.create({
   baseURL: DOMAIN,

@@ -1,10 +1,18 @@
-import { ProjectInsertModel, ProjectUpdateModel, UserProjectModel } from 'redux/thunks/projectThunk';
+import { ProjectInsertModel, ProjectUpdateModel, UserProjectModel } from 'models/projectModel';
 import { https } from './baseService';
 
 class ProjectService {
   createProjectAuthorize = (projectInsert: ProjectInsertModel) => {
     let url = '/api/Project/createProjectAuthorize';
     return https.post(url, projectInsert);
+  };
+
+  getProjectDetail = (id: number) => {
+    let url = '/api/Project/getProjectDetail';
+    if (id) {
+      url = `/api/Project/getProjectDetail?id=${id}`;
+    }
+    return https.get(url);
   };
 
   getAllProject = (keyword: string | undefined) => {

@@ -9,8 +9,9 @@ import * as Yup from 'yup';
 
 import Card from 'components/Card';
 import InputField from 'components/InputField';
+import { UserJiraModel } from 'models/usersModel';
 import { useAppDispatch } from 'redux/configureStore';
-import { UserJiraModel, usersThunk } from 'redux/thunks/userThunk';
+import { usersThunk } from 'redux/thunks/userThunk';
 import styles from './styles.module.scss';
 
 const SignUpSchema = Yup.object().shape({

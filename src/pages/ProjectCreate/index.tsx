@@ -104,7 +104,6 @@ const ProjectCreate = (props: Props) => {
               label='Project Category'
               name='categoryId'
               defaultValue='1'
-              value={values.categoryId}
               list={projectCategoryList}
               listLabel='projectCategoryName'
               listValue='id'

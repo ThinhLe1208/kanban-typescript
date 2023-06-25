@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import GlobalStyles from 'components/GlobalStyles';
 import store from 'redux/configureStore';
-import themeConfig from 'util/themes/antdTheme.json';
+import themeConfig from 'utils/themes/antdTheme.json';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

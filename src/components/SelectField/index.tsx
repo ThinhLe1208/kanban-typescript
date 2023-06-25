@@ -2,21 +2,21 @@ import { Select } from 'antd';
 import { useMemo } from 'react';
 
 import { useAppDispatch } from 'redux/configureStore';
-import { Priority, ProjectCategory, Status, TaskType } from 'redux/slices/optionsSlice';
+import { PriorityModel, ProjectCategoryModel, StatusModel, TaskTypeModel } from 'models/optionsModel';
 import styles from './styles.module.scss';
 
-type Props = {
+interface Props {
   label: string;
   name: string;
   defaultValue: string;
-  value: string | number | undefined;
-  list: Priority[] | ProjectCategory[] | Status[] | TaskType[];
+  value?: string | number | undefined;
+  list: PriorityModel[] | ProjectCategoryModel[] | StatusModel[] | TaskTypeModel[];
   listLabel: string;
   listValue: string;
   setFieldValue: any;
   api?: boolean;
   taskDetail?: string;
-};
+}
 
 const SelectField = ({
   label,

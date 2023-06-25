@@ -10,10 +10,11 @@ import * as Yup from 'yup';
 
 import Card from 'components/Card';
 import InputField from 'components/InputField';
+import { UserJiraLoginModel } from 'models/usersModel';
 import { useAppDispatch } from 'redux/configureStore';
-import { UserJiraLoginModel, usersThunk } from 'redux/thunks/userThunk';
-import { ACCESS_TOKEN, USER_LOGIN } from 'util/constants/settingSystem';
-import storage from 'util/storage';
+import { usersThunk } from 'redux/thunks/userThunk';
+import { ACCESS_TOKEN, USER_LOGIN } from 'utils/constants/settingSystem';
+import storage from 'utils/storage';
 import styles from './styles.module.scss';
 
 const SignInSchema = Yup.object().shape({

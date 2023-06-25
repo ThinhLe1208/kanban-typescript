@@ -15,10 +15,11 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Card from 'components/Card';
+import { MemberModel, ProjectModel, ProjectUpdateModel, UserProjectModel } from 'models/projectModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { MemberModel, ProjectModel } from 'redux/slices/projectSlice';
+import { setProjectEdit } from 'redux/slices/projectSlice';
 import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
-import { UserProjectModel, projectThunk } from 'redux/thunks/projectThunk';
+import { projectThunk } from 'redux/thunks/projectThunk';
 import { usersThunk } from 'redux/thunks/userThunk';
 import styles from './styles.module.scss';
 
@@ -74,14 +75,14 @@ const TableActions = ({ project }: Props) => {
   const handleEditProject = () => {
     dispatch(setOffcanvas(0));
     dispatch(showOffcanvas());
-    // const projectUpdate: ProjectUpdateModel = {
-    //   id: record.id;
-    //   projectName: record.projectName;
-    //   creator: record.;
-    //   description: string;
-    //   categoryId: string;
-    // }
-    // dispatch(setProjectEdit(projectUpdate));
+    const projectUpdate: ProjectUpdateModel = {
+      id: project.id,
+      projectName: project.projectName,
+      creator: project.creator.id,
+      description: project.description,
+      categoryId: String(project.categoryId),
+    };
+    dispatch(setProjectEdit(projectUpdate));
   };
 
   const handleRemoveProject = async () => {

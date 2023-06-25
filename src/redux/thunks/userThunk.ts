@@ -1,22 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { User, UserLoginModel } from 'redux/slices/usersSlice';
+import { User, UserJiraLoginModel, UserJiraModel, UserLoginModel } from 'models/usersModel';
 import { usersService } from 'services/userService';
-
-// signup
-export type UserJiraModel = {
-  email: string;
-  passWord: string;
-  name: string;
-  phoneNumber: string;
-};
-
-// signin
-export type UserJiraLoginModel = {
-  email: string;
-  passWord: string;
-};
 
 class UsersThunk {
   signUp = createAsyncThunk<string, UserJiraModel, { rejectValue: string }>(

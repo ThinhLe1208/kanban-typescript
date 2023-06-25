@@ -4,13 +4,13 @@ import styles from './styles.module.scss';
 import { Breadcrumb, Divider } from 'antd';
 
 type BreadCrumb = {
-  title: string;
+  title: string | undefined;
   href?: string;
 };
 
 type Props = {
   breadCrumbList: BreadCrumb[];
-  title: string;
+  title: string | undefined;
 };
 
 const Heading = ({ breadCrumbList, title }: Props) => {

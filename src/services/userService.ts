@@ -1,5 +1,5 @@
+import { UserJiraLoginModel, UserJiraModel } from 'models/usersModel';
 import { https } from './baseService';
-import { UserJiraLoginModel, UserJiraModel } from 'redux/thunks/userThunk';
 
 class UsersService {
   signUp = (signUpFormValues: UserJiraModel) => {

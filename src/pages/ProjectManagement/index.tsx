@@ -11,9 +11,9 @@ import { Link } from 'react-router-dom';
 
 import Card from 'components/Card';
 import Heading from 'components/Heading';
+import { ProjectModel } from 'models/projectModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { OptionsState } from 'redux/slices/optionsSlice';
-import { ProjectModel, ProjectState } from 'redux/slices/projectSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import TableActions from './components/TableActions';
 import styles from './styles.module.scss';
@@ -29,7 +29,7 @@ const breadCrumbList = [
 type Props = {};
 
 const ProjectManagement = (props: Props) => {
-  const { projectList }: ProjectState = useSelector((state: RootState) => state.project);
+  const { projectList } = useSelector((state: RootState) => state.project);
   const { projectCategoryList }: OptionsState = useSelector((state: RootState) => state.options);
   const dispatch = useAppDispatch();
 

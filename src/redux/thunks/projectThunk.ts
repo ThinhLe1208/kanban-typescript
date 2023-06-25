@@ -1,32 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import {
+  ProjectDetailModel,
+  ProjectInsertModel,
+  ProjectModel,
+  ProjectUpdateModel,
+  UserProjectModel,
+} from 'models/projectModel';
 import { AppDispatch } from 'redux/configureStore';
-import { ProjectModel } from 'redux/slices/projectSlice';
 import { projectService } from 'services/projectService';
-
-// createProjectAuthorize
-export type ProjectInsertModel = {
-  projectName: string;
-  description: string;
-  categoryId: number;
-  alias: string;
-};
-
-// updateProject
-export type ProjectUpdateModel = {
-  id: number;
-  projectName: string;
-  creator: number;
-  description: string;
-  categoryId: string;
-};
-
-// removeUserFromProject
-export type UserProjectModel = {
-  projectId: number;
-  userId: number;
-};
 
 class ProjectThunk {
   createProjectAuthorize = createAsyncThunk<
@@ -38,6 +21,25 @@ class ProjectThunk {
   >('project/createProjectAuthorize', async (projectInsert, { rejectWithValue }) => {
     try {
       const response = await projectService.createProjectAuthorize(projectInsert);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        console.error(err);
+      }
+    }
+  });
+
+  getProjectDetail = createAsyncThunk<
+    ProjectDetailModel,
+    number,
+    {
+      rejectValue: string;
+    }
+  >('project/getProjectDetail', async (id, { rejectWithValue }) => {
+    try {
+      const response = await projectService.getProjectDetail(id);
       return response?.data?.content;
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -76,10 +78,26 @@ class ProjectThunk {
     }
   });
 
-  updateProject = createAsyncThunk('project/updateProject', async (projectUpdate: ProjectUpdateModel, { dispatch }) => {
-    const response = await projectService.updateProject(projectUpdate);
-    dispatch(this.getAllProject());
-    return response?.data?.content;
+  updateProject = createAsyncThunk<
+    ProjectUpdateModel & { alias: string; deleted: boolean },
+    ProjectUpdateModel,
+    {
+      dispatch: AppDispatch;
+      rejectValue: string;
+    }
+  >('project/updateProject', async (projectUpdate, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await projectService.updateProject(projectUpdate);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        console.error(err);
+      }
+    } finally {
+      dispatch(this.getAllProject());
+    }
   });
 
   assignUserProject = createAsyncThunk<

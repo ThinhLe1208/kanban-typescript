@@ -2,9 +2,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 import optionsReducer from './slices/optionsSlice';
+import projectReducer from './slices/projectSlice';
+import taskReducer from './slices/taskSlice';
 import uiControlReducer from './slices/uiControlSlice';
 import usersReducer from './slices/usersSlice';
-import projectReducer from './slices/projectSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     uiControl: uiControlReducer,
     options: optionsReducer,
     project: projectReducer,
+    task: taskReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -3,11 +3,11 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'util/constants/settingSystem';
+import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants/settingSystem';
 
+import { UserLoginModel } from 'models/usersModel';
 import { toast } from 'react-toastify';
-import { UserLoginModel } from 'redux/slices/usersSlice';
-import storage from 'util/storage';
+import storage from 'utils/storage';
 import styles from './styles.module.scss';
 
 type Props = {
