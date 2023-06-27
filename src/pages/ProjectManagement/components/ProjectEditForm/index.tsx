@@ -25,6 +25,7 @@ const ProjectEditForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   const { projectCategoryList } = useSelector((state: RootState) => state.options);
   const projectEdit = useSelector((state: RootState) => state.project.projectEdit);
 
+  // Formik
   const initialValues: ProjectUpdateModel = useMemo(() => {
     if (projectEdit) {
       return projectEdit;
@@ -39,7 +40,6 @@ const ProjectEditForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
     }
   }, [projectEdit]);
 
-  // Formik
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: initialValues,

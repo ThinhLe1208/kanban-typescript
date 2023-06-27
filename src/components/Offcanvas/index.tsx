@@ -1,9 +1,13 @@
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
+import { faFileCirclePlus, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Drawer, Space } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import OffcanvasTitle from 'components/OffcanvasTitle';
+import CreateTaskForm from 'pages/ProjectBoard/components/CreateTaskForm';
+import EditTaskForm from 'pages/ProjectBoard/components/EditTaskForm';
 import ProjectEditForm from 'pages/ProjectManagement/components/ProjectEditForm';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { hideOffcanvas } from 'redux/slices/uiControlSlice';
@@ -41,6 +45,24 @@ const Offcanvas = (props: Props) => {
           showBtn: true,
           aceptBtnContent: 'Edit',
           offcanvasContent: <ProjectEditForm ref={formRef} />,
+        });
+        break;
+      case 1:
+        setData({
+          title: 'Create Issue',
+          icon: <FontAwesomeIcon icon={faFileCirclePlus} />,
+          showBtn: true,
+          aceptBtnContent: 'Create',
+          offcanvasContent: <CreateTaskForm ref={formRef} />,
+        });
+        break;
+      case 2:
+        setData({
+          title: 'Detail Issue',
+          icon: <FontAwesomeIcon icon={faFilePen} />,
+          showBtn: false,
+          aceptBtnContent: '',
+          offcanvasContent: <EditTaskForm />,
         });
         break;
       default:

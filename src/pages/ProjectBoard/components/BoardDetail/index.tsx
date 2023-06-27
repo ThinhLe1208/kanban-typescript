@@ -1,17 +1,16 @@
-import React from 'react';
 import { Avatar, Col, Row, Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
 
-import styles from './styles.module.scss';
+import { MemberDetailModel } from 'models/projectModel';
 import { RootState } from 'redux/configureStore';
-import { MemberModel } from 'models/projectModel';
+import styles from './styles.module.scss';
 
 interface Props {}
 
 const BoardDetail = (props: Props) => {
   const { projectDetail } = useSelector((state: RootState) => state.project);
 
-  const renderAvatars = (list: Array<MemberModel & { email: null; phoneNumber: null }> | undefined) => {
+  const renderAvatars = (list: MemberDetailModel[] | undefined) => {
     if (Array.isArray(list)) {
       return list.map((member, index) => (
         <Tooltip

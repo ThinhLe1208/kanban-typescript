@@ -1,17 +1,16 @@
-import React from 'react';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { Droppable } from 'react-beautiful-dnd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Badge, Button, Dropdown, Space } from 'antd';
-import { faEllipsis, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { faHardDrive, faPenToSquare, faStar, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { MenuProps } from 'antd';
+import { Badge, Button, Dropdown, Space } from 'antd';
+import { Droppable } from 'react-beautiful-dnd';
 
-import styles from './styles.module.scss';
-import { useAppDispatch } from 'redux/configureStore';
 import { LstTaskDeTailModel, LstTaskModel } from 'models/projectModel';
 import Issue from 'pages/ProjectBoard/components/Issue';
-// import CreateTaskForm from 'components/CreateTaskForm';
+import { useAppDispatch } from 'redux/configureStore';
+import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
+import styles from './styles.module.scss';
 
 interface Props {
   colDetail: LstTaskModel;
@@ -33,15 +32,8 @@ const KanbanColumn = ({ colDetail, index }: Props) => {
     }
   };
   const handleClickAddIssueBtn = () => {
-    // dispatch(
-    //   setOffcanvas({
-    //     title: 'Create Issue',
-    //     icon: <FontAwesomeIcon icon={faFileCirclePlus} />,
-    //     aceptBtn: 'Create',
-    //     showBtn: true,
-    //     offcanvasContent: <CreateTaskForm />,
-    //   })
-    // );
+    dispatch(setOffcanvas(1));
+    dispatch(showOffcanvas());
   };
 
   const headerStyle = () => {

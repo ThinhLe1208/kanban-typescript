@@ -1,6 +1,6 @@
 // getPriority
 export type PriorityModel = {
-  [key: string]: string | number | boolean;
+  [index: string]: string | number | boolean;
   priorityId: number;
   priority: string;
   description: string;
@@ -10,14 +10,14 @@ export type PriorityModel = {
 
 // getAllProjectCategory
 export type ProjectCategoryModel = {
-  [key: string]: string | number;
+  [index: string]: string | number;
   id: number;
   projectCategoryName: string;
 };
 
 // getAllStatus
 export type StatusModel = {
-  [key: string]: string;
+  [index: string]: string;
   statusId: string;
   statusName: string;
   alias: string;
@@ -26,7 +26,7 @@ export type StatusModel = {
 
 // getAllTaskType
 export type TaskTypeModel = {
-  [key: string]: string | number;
+  [index: string]: string | number;
   id: number;
   taskType: string;
 };

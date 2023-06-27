@@ -11,7 +11,7 @@ export type ProjectInsertModel = {
 // getProjectDetail
 export type ProjectDetailModel = {
   lstTask: LstTaskModel[];
-  members: Array<MemberModel & { email: null; phoneNumber: null }>;
+  members: MemberDetailModel[];
   creator: CreatorModel;
   id: number;
   projectName: string;
@@ -26,6 +26,8 @@ export type LstTaskModel = {
   statusName: string;
   alias: string;
 };
+
+export type MemberDetailModel = MemberModel & { [index: string]: any; email: null; phoneNumber: null };
 
 export type LstTaskDeTailModel = {
   priorityTask: Pick<PriorityModel, 'priorityId' | 'priority'>;

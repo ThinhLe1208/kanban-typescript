@@ -19,7 +19,7 @@ const Kanban = ({ projectDetail }: Props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // question: 1st render lstTask is empty
+    // 1st render lstTask is empty
     setListTask(projectDetail?.lstTask);
   }, [projectDetail?.lstTask]);
 

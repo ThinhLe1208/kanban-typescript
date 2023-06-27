@@ -8,6 +8,7 @@ import EditorField from 'components/EditorField';
 import Heading from 'components/Heading';
 import InputField from 'components/InputField';
 import SelectField from 'components/SelectField';
+import { ProjectInsertModel } from 'models/projectModel';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { RootState, useAppDispatch } from 'redux/configureStore';
@@ -21,35 +22,30 @@ const breadCrumbList = [
 ];
 
 const CreateProjectSchema = Yup.object().shape({
-  projectName: Yup.string().required('Please provide an project name.'),
+  projectName: Yup.string().required('Please provide a project name.'),
 });
 
 interface Props {}
 
 const ProjectCreate = (props: Props) => {
+  const { projectCategoryList } = useSelector((state: RootState) => state.options);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  // get projectCategoryArr from redux store
-  const { projectCategoryList } = useSelector((state: RootState) => state.options);
-
   // Formik
+  const initialValues: ProjectInsertModel = {
+    projectName: '',
+    description: '',
+    categoryId: 1,
+    alias: '',
+  };
+
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      projectName: '',
-      description: '',
-      categoryId: '1',
-      alias: '',
-    },
+    initialValues: initialValues,
     validationSchema: CreateProjectSchema,
     onSubmit: async (values) => {
-      const projectInsert = {
-        ...values,
-        categoryId: Number(values.categoryId),
-      };
       try {
-        const response = await dispatch(projectThunk.createProjectAuthorize(projectInsert)).unwrap();
+        const response = await dispatch(projectThunk.createProjectAuthorize(values)).unwrap();
         toast.success('Create a project successfully.');
         navigate(`/project/board/${response.id}`);
       } catch (err) {
@@ -67,7 +63,7 @@ const ProjectCreate = (props: Props) => {
       <div className={styles.heading}>
         <Heading
           breadCrumbList={breadCrumbList}
-          title={'Create Project'}
+          title='Create Project'
         />
       </div>
 
@@ -103,7 +99,7 @@ const ProjectCreate = (props: Props) => {
             <SelectField
               label='Project Category'
               name='categoryId'
-              defaultValue='1'
+              defaultValue={values.categoryId}
               list={projectCategoryList}
               listLabel='projectCategoryName'
               listValue='id'

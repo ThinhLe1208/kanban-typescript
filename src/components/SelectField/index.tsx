@@ -1,15 +1,14 @@
 import { Select } from 'antd';
 import { useMemo } from 'react';
 
-import { useAppDispatch } from 'redux/configureStore';
 import { PriorityModel, ProjectCategoryModel, StatusModel, TaskTypeModel } from 'models/optionsModel';
+import { useAppDispatch } from 'redux/configureStore';
 import styles from './styles.module.scss';
 
 interface Props {
   label: string;
   name: string;
-  defaultValue: string;
-  value?: string | number | undefined;
+  defaultValue: string | number;
   list: PriorityModel[] | ProjectCategoryModel[] | StatusModel[] | TaskTypeModel[];
   listLabel: string;
   listValue: string;
@@ -22,7 +21,6 @@ const SelectField = ({
   label,
   name,
   defaultValue,
-  value,
   list = [],
   listLabel,
   listValue,
@@ -33,38 +31,17 @@ const SelectField = ({
   const dispatch = useAppDispatch();
 
   const options = useMemo(() => {
-    return list.map((option) => {
-      return {
-        label: option[listLabel],
-        // type defaultValue antd does not include number ???
-        value: String(option[listValue]),
-      };
-    });
+    if (Array.isArray(list)) {
+      return list.map((option) => {
+        return {
+          label: option[listLabel],
+          value: option[listValue],
+        };
+      });
+    } else {
+      return [];
+    }
   }, [list, listLabel, listValue]);
-
-  // style tags in the select
-  // const tagRender = (props) => {
-  //   const { label, /* value , */ closable, onClose } = props;
-  //   const onPreventMouseDown = (event) => {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //   };
-  //   return (
-  //     <Tag
-  //       color='cyan'
-  //       onMouseDown={onPreventMouseDown}
-  //       closable={closable}
-  //       onClose={onClose}
-  //       style={{
-  //         display: 'flex',
-  //         alignItems: 'center',
-  //         marginRight: 3,
-  //       }}
-  //     >
-  //       {label}
-  //     </Tag>
-  //   );
-  // };
 
   // antd handler doesnt give a event param so fake an event for a handler
   const customHandleChangeAntd = (value: number, name: string) => {
@@ -79,16 +56,9 @@ const SelectField = ({
         default:
       }
     }
-    // const changeEvent: any = {
-    //   target: {
-    //     name,
-    //     value,
-    //   },
-    // };
-    // onChange(changeEvent);
   };
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: string | number) => {
     setFieldValue(name, value);
   };
 

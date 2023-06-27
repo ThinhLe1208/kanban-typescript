@@ -1,20 +1,20 @@
-import { ChangeEventHandler } from 'react';
-
-import styles from './styles.module.scss';
 import { Input } from 'antd';
-import ErrorMessage from 'components/ErrorMessage';
+import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-type Props = {
+import ErrorMessage from 'components/ErrorMessage';
+import styles from './styles.module.scss';
+
+interface Props {
   label?: string;
   name: string;
-  value: string | undefined;
+  value: string | number | undefined;
   error: string | undefined;
   touched: boolean | undefined;
   placeholder?: string;
   type?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
-  onBlur: ChangeEventHandler<HTMLInputElement>;
-};
+  onBlur: FocusEventHandler<HTMLInputElement>;
+}
 
 const InputField = ({
   label,
