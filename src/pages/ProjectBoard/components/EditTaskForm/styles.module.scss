@@ -1,4 +1,4 @@
-.wrapper {
+.editTaskFormWrapper {
   width: 100vw;
   padding: 20px;
 
@@ -23,7 +23,8 @@
     font-weight: 700;
   }
 
-  .description {
+  .description,
+  .estimate {
     font-weight: 600;
     margin-left: 2px;
     margin-bottom: 6px;
@@ -31,5 +32,15 @@
 
   .subTitle {
     color: var(--sub-text-color);
+  }
+}
+
+.timePopover {
+  h3 {
+    margin-bottom: 6px;
+  }
+
+  p {
+    margin-bottom: 10px;
   }
 }

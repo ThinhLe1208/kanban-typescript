@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { projectThunk } from 'redux/thunks/projectThunk';
+import taskThunk from 'redux/thunks/taskThunk';
 
 export interface UiControlState {
   isLoading: boolean;
@@ -44,7 +45,7 @@ const uiControlSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // getProjectDetail
+      // --------- getProjectDetail ---------
       .addCase(projectThunk.getProjectDetail.pending, (state) => {
         state.isLoading = true;
       })
@@ -54,7 +55,25 @@ const uiControlSlice = createSlice({
       .addCase(projectThunk.getProjectDetail.rejected, (state) => {
         state.isLoading = false;
       })
-      // getAllProject
+      // createTask + getProjectDetail
+      .addCase(taskThunk.createTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      //  --------- getTaskDetail ---------
+      .addCase(taskThunk.getTaskDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(taskThunk.getTaskDetail.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(taskThunk.getTaskDetail.rejected, (state) => {
+        state.isLoading = false;
+      })
+      // updateTask + getProjectDetail + getTaskDetail
+      .addCase(taskThunk.updateTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      // --------- getAllProject ---------
       .addCase(projectThunk.getAllProject.pending, (state) => {
         state.isLoading = true;
       })

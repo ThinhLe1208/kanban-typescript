@@ -1,27 +1,17 @@
 import { Col, Row, Slider } from 'antd';
 
-import { useAppDispatch } from 'redux/configureStore';
 import styles from './styles.module.scss';
 
 interface Props {
   label: string;
   name: string;
   spentValue: number;
-  remainValue: number;
+  remainValue?: number;
+  estimateValue: number;
   disabled?: boolean;
-  api?: boolean;
-  taskDetail?: string;
 }
 
-const SliderField = ({ label, name, spentValue, remainValue, disabled = false, api = false, taskDetail }: Props) => {
-  const dispatch = useAppDispatch();
-
-  const handleChange = (value: number) => {
-    if (api) {
-      // dispatch(updateOriginalEstimateSagaAction(taskDetail.taskId, value, taskDetail.projectId));
-    }
-  };
-
+const SliderField = ({ label, name, spentValue, remainValue, estimateValue, disabled = false }: Props) => {
   return (
     <div className={styles.wrapper}>
       <label
@@ -36,8 +26,7 @@ const SliderField = ({ label, name, spentValue, remainValue, disabled = false, a
         value={spentValue}
         disabled={disabled}
         min={0}
-        max={spentValue + remainValue}
-        onChange={handleChange}
+        max={estimateValue}
       />
 
       <Row>
@@ -45,9 +34,8 @@ const SliderField = ({ label, name, spentValue, remainValue, disabled = false, a
           <p>{spentValue !== 0 ? `${spentValue}h logged` : 'No time logged'}</p>
         </Col>
         <Col span={12}>
-          <p style={{ textAlign: 'right' }}>
-            {remainValue ? `${remainValue}h remaining` : `${spentValue + remainValue}h estimated`}
-          </p>
+          {remainValue && <p style={{ textAlign: 'right' }}>{`${remainValue}h remaining`}</p>}
+          {!remainValue && <p style={{ textAlign: 'right' }}>{`${estimateValue - spentValue}h remaining`}</p>}
         </Col>
       </Row>
     </div>

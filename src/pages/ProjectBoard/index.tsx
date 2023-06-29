@@ -28,8 +28,6 @@ const ProjectBoard = (props: Props) => {
     { title: projectDetail?.projectName },
   ];
 
-  console.log('projectDetail', projectDetail);
-
   useEffect(() => {
     const getProjectDetail = async () => {
       try {

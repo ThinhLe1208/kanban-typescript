@@ -6,6 +6,7 @@ import projectReducer from './slices/projectSlice';
 import taskReducer from './slices/taskSlice';
 import uiControlReducer from './slices/uiControlSlice';
 import usersReducer from './slices/usersSlice';
+import commentReducer from './slices/commentSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,12 +15,8 @@ const store = configureStore({
     options: optionsReducer,
     project: projectReducer,
     task: taskReducer,
+    comment: commentReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      // hide an error when states are components or functions in redux-toolkit store
-      serializableCheck: false, // works in the app, but doesn't in tests
-    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -22,7 +22,7 @@ const Sidebar = (props: Props) => {
 
   const itemsTop: MenuProps['items'] = [
     {
-      label: <Link to='/project/board/1'>Project board</Link>,
+      label: <Link to='/project/board/12925'>Project board</Link>,
       key: 'board',
       icon: <LayoutOutlined className={styles.icon} />,
     },

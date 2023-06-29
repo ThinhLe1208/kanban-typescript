@@ -5,7 +5,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { TINY_KEY } from 'utils/constants/settingSystem';
 
 type Props = {
-  label: string;
+  label?: string;
   name: string;
   height: number;
   value: string | undefined;

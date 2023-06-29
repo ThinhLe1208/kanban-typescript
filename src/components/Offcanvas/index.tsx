@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import OffcanvasTitle from 'components/OffcanvasTitle';
 import CreateTaskForm from 'pages/ProjectBoard/components/CreateTaskForm';
 import EditTaskForm from 'pages/ProjectBoard/components/EditTaskForm';
-import ProjectEditForm from 'pages/ProjectManagement/components/ProjectEditForm';
+import EditProjectForm from 'pages/ProjectManagement/components/EditProjectForm';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { hideOffcanvas } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
@@ -44,7 +44,7 @@ const Offcanvas = (props: Props) => {
           icon: <EditOutlined />,
           showBtn: true,
           aceptBtnContent: 'Edit',
-          offcanvasContent: <ProjectEditForm ref={formRef} />,
+          offcanvasContent: <EditProjectForm ref={formRef} />,
         });
         break;
       case 1:

@@ -2,21 +2,25 @@ import type { SelectProps } from 'antd';
 import { Select, Tag } from 'antd';
 import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
 import { useMemo } from 'react';
+import { toast } from 'react-toastify';
 
 import { MemberDetailModel } from 'models/projectModel';
+import { TaskEditModel } from 'models/taskModel';
+import { useAppDispatch } from 'redux/configureStore';
+import taskThunk from 'redux/thunks/taskThunk';
 import styles from './styles.module.scss';
 
 interface Props {
   label: string;
   name: string;
-  defaultValue: string[] | number[];
+  defaultValue: number[];
   list: MemberDetailModel[] | undefined;
   listLabel: string;
   listValue: string;
   setFieldValue: any;
   placeholder?: string;
   api?: boolean;
-  taskDetail?: string;
+  taskDetail?: TaskEditModel;
 }
 
 const MultiSelectField = ({
@@ -31,6 +35,8 @@ const MultiSelectField = ({
   api = false,
   taskDetail,
 }: Props) => {
+  const dispatch = useAppDispatch();
+
   const options: SelectProps['options'] = useMemo(() => {
     if (Array.isArray(list)) {
       return list.map((option) => {
@@ -69,8 +75,30 @@ const MultiSelectField = ({
     );
   };
 
-  const handleChange = (value: string[] | number[]) => {
-    setFieldValue(name, value);
+  const handleChange = async (value: number[]) => {
+    if (api && taskDetail) {
+      const updateTask: TaskEditModel = {
+        ...taskDetail,
+        listUserAsign: value,
+      };
+      try {
+        await dispatch(taskThunk.updateTask(updateTask)).unwrap();
+        toast.success('Adjust members successfully.');
+      } catch (err) {
+        if (typeof err === 'string') {
+          if (err === 'Task is not found!') {
+            toast.error('Task is not found.');
+          } else {
+            toast.error(err);
+          }
+        } else {
+          toast.error('Failed to adjust members.');
+          console.error(err);
+        }
+      }
+    } else {
+      setFieldValue(name, value);
+    }
   };
 
   return (
@@ -90,7 +118,7 @@ const MultiSelectField = ({
         placeholder={placeholder}
         tagRender={tagRender}
         mode='multiple'
-        allowClear
+        allowClear={!api}
         showSearch={false}
       />
     </div>

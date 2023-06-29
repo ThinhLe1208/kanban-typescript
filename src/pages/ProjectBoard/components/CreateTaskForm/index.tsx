@@ -2,6 +2,7 @@ import { Col, Row } from 'antd';
 import { useFormik } from 'formik';
 import { forwardRef } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import EditorField from 'components/EditorField';
@@ -12,7 +13,9 @@ import SelectField from 'components/SelectField';
 import SliderField from 'components/SliderField';
 import { TaskInsertModel } from 'models/taskModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
+import taskThunk from 'redux/thunks/taskThunk';
 import styles from './styles.module.scss';
+import { hideOffcanvas } from 'redux/slices/uiControlSlice';
 
 const CreateTaskSchema = Yup.object().shape({
   taskName: Yup.string().required('Please provide an issue name.'),
@@ -43,13 +46,27 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
     enableReinitialize: true,
     initialValues: initialValues,
     validationSchema: CreateTaskSchema,
-    onSubmit: (values) => {
-      const updatedValues = {
+    onSubmit: async (values) => {
+      const newTask: TaskInsertModel = {
         ...values,
-        originalEstimate: values.timeTrackingSpent + values.timeTrackingRemaining,
+        timeTrackingRemaining: values.originalEstimate - values.timeTrackingSpent,
       };
-      console.log('CreateTaskForm ~ values:', updatedValues);
-      // dispatch(createTaskSagaAction(updatedValues));
+      try {
+        await dispatch(taskThunk.createTask(newTask)).unwrap();
+        toast.success('Create a task successfully.');
+        dispatch(hideOffcanvas());
+      } catch (err) {
+        if (typeof err === 'string') {
+          if (err === 'task already exists!') {
+            toast.error('Task name already exists.');
+          } else {
+            toast.error('Failed to create a task.');
+          }
+        } else {
+          toast.error('Failed to create a task.');
+          console.error(err);
+        }
+      }
     },
   });
 
@@ -87,6 +104,7 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
               label='Status'
               name='statusId'
               defaultValue={values.statusId}
+              value={values.statusId}
               list={statusList}
               listLabel='statusName'
               listValue='statusId'
@@ -107,6 +125,7 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
               label='Priority'
               name='priorityId'
               defaultValue={values.priorityId}
+              value={values.priorityId}
               list={priorityList}
               listLabel='priority'
               listValue='priorityId'
@@ -121,6 +140,7 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
               label='Type'
               name='typeId'
               defaultValue={values.typeId}
+              value={values.typeId}
               list={taskTypeList}
               listLabel='taskType'
               listValue='id'
@@ -157,7 +177,7 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
             label='Time Tracking'
             name='timeTrackingSpent'
             spentValue={values.timeTrackingSpent}
-            remainValue={values.timeTrackingRemaining}
+            estimateValue={values.originalEstimate}
           />
         </div>
 
@@ -170,11 +190,12 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
             md={12}
           >
             <InputNumberField
-              label='Time spent (hours)'
-              name='timeTrackingSpent'
+              label='Total Estimated Hours'
+              name='originalEstimate'
               defaultValue={0}
+              value={values.originalEstimate}
               setFieldValue={setFieldValue}
-              min={0}
+              min={values.timeTrackingSpent}
             />
           </Col>
           <Col
@@ -182,11 +203,13 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
             md={12}
           >
             <InputNumberField
-              label='Time remaining (hours)'
-              name='timeTrackingRemaining'
+              label='Hours spent'
+              name='timeTrackingSpent'
               defaultValue={0}
+              value={values.timeTrackingSpent}
               setFieldValue={setFieldValue}
               min={0}
+              max={values.originalEstimate}
             />
           </Col>
         </Row>

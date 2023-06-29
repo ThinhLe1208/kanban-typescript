@@ -1,0 +1,15 @@
+.wrapper {
+  .label {
+    font-weight: 600;
+    margin-left: 2px;
+    margin-bottom: 14px;
+  }
+
+  .rightSide {
+    padding-left: 10px;
+
+    .commentBtns {
+      margin-top: var(--label-bottom-space);
+    }
+  }
+}

@@ -6,7 +6,8 @@ import type { MenuProps } from 'antd';
 import { Badge, Button, Dropdown, Space } from 'antd';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { LstTaskDeTailModel, LstTaskModel } from 'models/projectModel';
+import { LstTaskModel } from 'models/projectModel';
+import { TaskDeTailModel } from 'models/taskModel';
 import Issue from 'pages/ProjectBoard/components/Issue';
 import { useAppDispatch } from 'redux/configureStore';
 import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
@@ -20,7 +21,7 @@ interface Props {
 const KanbanColumn = ({ colDetail, index }: Props) => {
   const dispatch = useAppDispatch();
 
-  const renderIssues = (list: LstTaskDeTailModel[]) => {
+  const renderIssues = (list: TaskDeTailModel[]) => {
     if (Array.isArray(list)) {
       return colDetail?.lstTaskDeTail?.map((issue, index) => (
         <Issue

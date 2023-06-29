@@ -3,13 +3,15 @@ import { Avatar, Tag, Tooltip } from 'antd';
 import { useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { AssignessModel, LstTaskDeTailModel } from 'models/projectModel';
 import { useAppDispatch } from 'redux/configureStore';
 import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
+import taskThunk from 'redux/thunks/taskThunk';
+import { AssignessModel, TaskDeTailModel } from 'models/taskModel';
+import { toast } from 'react-toastify';
 
 interface Props {
-  issue: LstTaskDeTailModel;
+  issue: TaskDeTailModel;
   index: number;
 }
 
@@ -34,9 +36,23 @@ const Issue = ({ issue, index }: Props) => {
     }
   };
 
-  const handleClickIssue = () => {
-    dispatch(setOffcanvas(2));
-    dispatch(showOffcanvas());
+  const handleClickIssue = async () => {
+    try {
+      await dispatch(taskThunk.getTaskDetail(issue?.taskId)).unwrap();
+      dispatch(setOffcanvas(2));
+      dispatch(showOffcanvas());
+    } catch (err) {
+      if (typeof err === 'string') {
+        if (err === 'task is not found!') {
+          toast.error('Task is not found.');
+        } else {
+          toast.error(err);
+        }
+      } else {
+        toast.error('Task is not found.');
+        console.error(err);
+      }
+    }
   };
 
   const priority = () => {
@@ -73,10 +89,7 @@ const Issue = ({ issue, index }: Props) => {
             {...provided.dragHandleProps}
           >
             {/* <Badge.Ribbon className={styles.tag")} text={issue?.priorityTask?.priority} color={priority()}> */}
-            <div
-              className={styles.issue}
-              onClick={handleClickIssue}
-            >
+            <div className={styles.issue}>
               <Tag
                 className={styles.priority}
                 color={priority()}

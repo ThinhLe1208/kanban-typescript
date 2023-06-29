@@ -1,11 +1,47 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { UpdatePiorityModel, UpdateStatusVM } from 'models/taskModel';
+
+import {
+  TaskDeTailModel,
+  TaskEditModel,
+  TaskEditResponseModel,
+  TaskInsertModel,
+  TimeTrackingUpdateModel,
+  UpdateEstimateModel,
+  UpdatePiorityModel,
+  UpdateStatusVM,
+} from 'models/taskModel';
 import { AppDispatch, RootState } from 'redux/configureStore';
 import taskService from 'services/taskService';
 import { projectThunk } from './projectThunk';
 
 class TaskThunk {
+  createTask = createAsyncThunk<
+    string,
+    TaskInsertModel,
+    {
+      dispatch: AppDispatch;
+      rejectValue: string;
+      state: RootState;
+    }
+  >('task/createTask', async (newTask, { dispatch, rejectWithValue, getState }) => {
+    try {
+      const response = await taskService.createTask(newTask);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        return err;
+      }
+    } finally {
+      const { projectDetail } = getState().project;
+      if (projectDetail?.id) {
+        dispatch(projectThunk.getProjectDetail(projectDetail.id));
+      }
+    }
+  });
+
   updateStatus = createAsyncThunk<
     string,
     UpdateStatusVM,
@@ -19,13 +55,13 @@ class TaskThunk {
       const response = await taskService.updateStatus(updateStatus);
       return response?.data?.content;
     } catch (err) {
-      console.log('TaskThunk ~ updatePriority=createAsyncThunk ~ err:', err);
       if (axios.isAxiosError(err)) {
         return rejectWithValue(err.response?.data?.content);
       } else {
         return err;
       }
     } finally {
+      dispatch(taskThunk.getTaskDetail(updateStatus?.taskId));
       const { projectDetail } = getState().project;
       if (projectDetail?.id) {
         dispatch(projectThunk.getProjectDetail(projectDetail.id));
@@ -44,10 +80,113 @@ class TaskThunk {
   >('task/updatePriority', async (updatePriority, { dispatch, rejectWithValue, getState }) => {
     try {
       const response = await taskService.updatePriority(updatePriority);
-      console.log('TaskThunk ~ updatePriority=createAsyncThunk ~ response:', response);
       return response?.data?.content;
     } catch (err) {
-      console.log('TaskThunk ~ updatePriority=createAsyncThunk ~ err:', err);
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        return err;
+      }
+    } finally {
+      dispatch(taskThunk.getTaskDetail(updatePriority?.taskId));
+      const { projectDetail } = getState().project;
+      if (projectDetail?.id) {
+        dispatch(projectThunk.getProjectDetail(projectDetail.id));
+      }
+    }
+  });
+
+  updateTimeTracking = createAsyncThunk<
+    string,
+    TimeTrackingUpdateModel,
+    {
+      dispatch: AppDispatch;
+      rejectValue: string;
+      state: RootState;
+    }
+  >('task/updateTimeTracking', async (updateTimeTracking, { dispatch, rejectWithValue, getState }) => {
+    try {
+      const response = await taskService.updateTimeTracking(updateTimeTracking);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        return err;
+      }
+    } finally {
+      dispatch(taskThunk.getTaskDetail(updateTimeTracking?.taskId));
+      const { projectDetail } = getState().project;
+      if (projectDetail?.id) {
+        dispatch(projectThunk.getProjectDetail(projectDetail.id));
+      }
+    }
+  });
+
+  updateEstimate = createAsyncThunk<
+    string,
+    UpdateEstimateModel,
+    {
+      dispatch: AppDispatch;
+      rejectValue: string;
+      state: RootState;
+    }
+  >('task/updateEstimate', async (updateEstimate, { dispatch, rejectWithValue, getState }) => {
+    try {
+      const response = await taskService.updateEstimate(updateEstimate);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        return err;
+      }
+    } finally {
+      dispatch(taskThunk.getTaskDetail(updateEstimate?.taskId));
+      const { projectDetail } = getState().project;
+      if (projectDetail?.id) {
+        dispatch(projectThunk.getProjectDetail(projectDetail.id));
+      }
+    }
+  });
+
+  updateTask = createAsyncThunk<
+    TaskEditResponseModel,
+    TaskEditModel,
+    {
+      dispatch: AppDispatch;
+      state: RootState;
+      rejectValue: string;
+    }
+  >('task/updateTask', async (updateTask, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await taskService.updateTask(updateTask);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        return err;
+      }
+    } finally {
+      dispatch(taskThunk.getTaskDetail(Number(updateTask.taskId)));
+      dispatch(projectThunk.getProjectDetail(updateTask.projectId));
+    }
+  });
+
+  removeTask = createAsyncThunk<
+    string,
+    number,
+    {
+      dispatch: AppDispatch;
+      state: RootState;
+      rejectValue: string;
+    }
+  >('task/removeTask', async (taskId, { rejectWithValue, dispatch, getState }) => {
+    try {
+      const response = await taskService.removeTask(taskId);
+      return response?.data?.content;
+    } catch (err) {
       if (axios.isAxiosError(err)) {
         return rejectWithValue(err.response?.data?.content);
       } else {
@@ -57,6 +196,25 @@ class TaskThunk {
       const { projectDetail } = getState().project;
       if (projectDetail?.id) {
         dispatch(projectThunk.getProjectDetail(projectDetail.id));
+      }
+    }
+  });
+
+  getTaskDetail = createAsyncThunk<
+    TaskDeTailModel,
+    number,
+    {
+      rejectValue: string;
+    }
+  >('task/getTaskDetail', async (taskId, { rejectWithValue }) => {
+    try {
+      const response = await taskService.getTaskDetail(taskId);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
+      } else {
+        return err;
       }
     }
   });

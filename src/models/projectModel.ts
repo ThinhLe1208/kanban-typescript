@@ -1,4 +1,5 @@
-import { PriorityModel, ProjectCategoryModel, TaskTypeModel } from './optionsModel';
+import { ProjectCategoryModel } from './optionsModel';
+import { TaskDeTailModel } from './taskModel';
 
 // createProjectAuthorize
 export type ProjectInsertModel = {
@@ -21,38 +22,13 @@ export type ProjectDetailModel = {
 };
 
 export type LstTaskModel = {
-  lstTaskDeTail: LstTaskDeTailModel[];
+  lstTaskDeTail: TaskDeTailModel[];
   statusId: string;
   statusName: string;
   alias: string;
 };
 
 export type MemberDetailModel = MemberModel & { [index: string]: any; email: null; phoneNumber: null };
-
-export type LstTaskDeTailModel = {
-  priorityTask: Pick<PriorityModel, 'priorityId' | 'priority'>;
-  taskTypeDetail: TaskTypeModel;
-  assigness: AssignessModel[];
-  lstComment: any[];
-  taskId: number;
-  taskName: string;
-  alias: string;
-  description: string;
-  statusId: string;
-  originalEstimate: number;
-  timeTrackingSpent: number;
-  timeTrackingRemaining: number;
-  typeId: number;
-  priorityId: number;
-  projectId: number;
-};
-
-export type AssignessModel = {
-  id: number;
-  avatar: string;
-  name: string;
-  alias: string;
-};
 
 // getAllProject
 export type ProjectModel = {

@@ -1,26 +1,31 @@
 import { Select } from 'antd';
 import { useMemo } from 'react';
+import { toast } from 'react-toastify';
 
 import { PriorityModel, ProjectCategoryModel, StatusModel, TaskTypeModel } from 'models/optionsModel';
+import { TaskDeTailModel } from 'models/taskModel';
 import { useAppDispatch } from 'redux/configureStore';
+import taskThunk from 'redux/thunks/taskThunk';
 import styles from './styles.module.scss';
 
 interface Props {
   label: string;
   name: string;
-  defaultValue: string | number;
+  defaultValue: string | number | undefined;
+  value: string | number | undefined;
   list: PriorityModel[] | ProjectCategoryModel[] | StatusModel[] | TaskTypeModel[];
   listLabel: string;
   listValue: string;
   setFieldValue: any;
   api?: boolean;
-  taskDetail?: string;
+  taskDetail?: TaskDeTailModel | null;
 }
 
 const SelectField = ({
   label,
   name,
   defaultValue,
+  value,
   list = [],
   listLabel,
   listValue,
@@ -43,17 +48,45 @@ const SelectField = ({
     }
   }, [list, listLabel, listValue]);
 
-  // antd handler doesnt give a event param so fake an event for a handler
-  const customHandleChangeAntd = (value: number, name: string) => {
-    if (api) {
+  const handleChangeApi = async (value: string | number) => {
+    if (!taskDetail) return;
+
+    try {
       switch (name) {
         case 'statusId':
-          // dispatch(updateStatusSagaAction(taskDetail.taskId, value, taskDetail.projectId));
+          if (typeof value === 'string') {
+            const updateStatus = {
+              taskId: taskDetail?.taskId,
+              statusId: value,
+            };
+            await dispatch(taskThunk.updateStatus(updateStatus)).unwrap();
+            toast.success('Update status successfully.');
+          }
           break;
         case 'priorityId':
-          // dispatch(updatePrioritySagaAction(taskDetail.taskId, value, taskDetail.projectId));
+          if (typeof value === 'number') {
+            const updatePriority = {
+              taskId: taskDetail?.taskId,
+              priorityId: value,
+            };
+            await dispatch(taskThunk.updatePriority(updatePriority)).unwrap();
+            toast.success('Update priority successfully.');
+          }
           break;
         default:
+      }
+
+      setFieldValue(name, value);
+    } catch (err) {
+      if (typeof err === 'string') {
+        if (err === 'user is not assign!') {
+          toast.error('You are not a member in this isssue.');
+        } else {
+          toast.error(err);
+        }
+      } else {
+        toast.error('Failed to adjust information.');
+        console.error(err);
       }
     }
   };
@@ -74,7 +107,8 @@ const SelectField = ({
       <Select
         className={styles.input}
         defaultValue={defaultValue}
-        onChange={handleChange}
+        value={value}
+        onChange={api ? handleChangeApi : handleChange}
         options={options}
       />
     </div>

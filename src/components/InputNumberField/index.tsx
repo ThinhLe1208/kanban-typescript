@@ -3,15 +3,16 @@ import { InputNumber } from 'antd';
 import styles from './styles.module.scss';
 
 interface Props {
-  label: string;
+  label?: string;
   name: string;
   defaultValue: number;
+  value: number;
   setFieldValue: any;
   min?: number;
   max?: number;
 }
 
-const InputNumberField = ({ label, name, defaultValue = 0, setFieldValue, min, max }: Props) => {
+const InputNumberField = ({ label, name, defaultValue = 0, value, setFieldValue, min, max }: Props) => {
   const handleChange = (value: number | null) => {
     setFieldValue(name, value);
   };
@@ -29,6 +30,7 @@ const InputNumberField = ({ label, name, defaultValue = 0, setFieldValue, min, m
         name={name}
         id={name}
         defaultValue={defaultValue}
+        value={value}
         onChange={handleChange}
         min={min}
         max={max}

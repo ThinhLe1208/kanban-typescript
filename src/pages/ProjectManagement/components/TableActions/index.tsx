@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import Card from 'components/Card';
 import { MemberModel, ProjectModel, ProjectUpdateModel, UserProjectModel } from 'models/projectModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { setProjectEdit } from 'redux/slices/projectSlice';
+import { setEditProject } from 'redux/slices/projectSlice';
 import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import { usersThunk } from 'redux/thunks/userThunk';
@@ -82,7 +82,7 @@ const TableActions = ({ project }: Props) => {
       description: project.description,
       categoryId: String(project.categoryId),
     };
-    dispatch(setProjectEdit(projectUpdate));
+    dispatch(setEditProject(projectUpdate));
   };
 
   const handleRemoveProject = async () => {
