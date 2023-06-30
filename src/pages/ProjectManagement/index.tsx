@@ -199,7 +199,6 @@ const ProjectManagement = (props: Props) => {
       key: 'description',
       width: 400,
       responsive: ['md'],
-      ...getColumnSearchProps('description'),
       sorter: (a, b) => {
         const n1 = a?.description.trim().toLowerCase();
         const n2 = b?.description.trim().toLowerCase();

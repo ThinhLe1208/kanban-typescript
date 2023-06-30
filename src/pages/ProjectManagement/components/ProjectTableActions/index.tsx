@@ -20,7 +20,7 @@ import { RootState, useAppDispatch } from 'redux/configureStore';
 import { setProjectEdit } from 'redux/slices/projectSlice';
 import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { usersThunk } from 'redux/thunks/usersThunk';
 import styles from './styles.module.scss';
 
 interface Props {

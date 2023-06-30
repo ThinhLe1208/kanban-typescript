@@ -1,4 +1,4 @@
-import { ClusterOutlined, FileAddOutlined, LayoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { ClusterOutlined, FileAddOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
@@ -16,15 +16,18 @@ const Sidebar = (props: Props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('board');
   const href = useLocation();
 
+  // find sidebar active item
   useEffect(() => {
-    setSelectedMenuItem(href.pathname.split('/')[2]);
+    let key = href.pathname.split('/').pop();
+    if (!key) return;
+    setSelectedMenuItem(key);
   }, [href]);
 
   const itemsTop: MenuProps['items'] = [
     {
-      label: <Link to='/project/12925'>Project board</Link>,
-      key: 'board',
-      icon: <LayoutOutlined className={styles.icon} />,
+      label: <Link to='/project'>Project management</Link>,
+      key: 'project',
+      icon: <ClusterOutlined className={styles.icon} />,
     },
     {
       label: <Link to='/project/create'>Create project</Link>,
@@ -32,19 +35,15 @@ const Sidebar = (props: Props) => {
       icon: <FileAddOutlined className={styles.icon} />,
     },
     {
-      label: <Link to='/project'>Project management</Link>,
-      key: 'projectManagement',
-      icon: <ClusterOutlined className={styles.icon} />,
-    },
-    {
       label: <Link to='/users'>Users management</Link>,
-      key: 'usersManagement',
+      key: 'users',
       icon: <UserOutlined className={styles.icon} />,
     },
-  ];
-
-  const itemsBottom: MenuProps['items'] = [
-    { label: 'Options', key: 'options', icon: <SettingOutlined className={styles.icon} /> },
+    {
+      label: 'Options',
+      key: 'options',
+      icon: <SettingOutlined className={styles.icon} />,
+    },
   ];
 
   return (
@@ -70,13 +69,6 @@ const Sidebar = (props: Props) => {
           <Menu
             mode='inline'
             items={itemsTop}
-            selectedKeys={[selectedMenuItem]}
-            style={{ border: 'none' }}
-          />
-
-          <Menu
-            mode='inline'
-            items={itemsBottom}
             selectedKeys={[selectedMenuItem]}
             style={{ border: 'none' }}
           />

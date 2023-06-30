@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { User, UserJiraModelUpdateModel, UserLoginModel } from 'models/usersModel';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { usersThunk } from 'redux/thunks/usersThunk';
 import { USER_LOGIN } from 'utils/constants/settingSystem';
 import storage from 'utils/storage';
 

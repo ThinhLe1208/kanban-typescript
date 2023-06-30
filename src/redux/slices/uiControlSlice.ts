@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { commentThunk } from 'redux/thunks/comment';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import taskThunk from 'redux/thunks/taskThunk';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { usersThunk } from 'redux/thunks/usersThunk';
 
 export interface UiControlState {
   isLoading: boolean;
@@ -138,6 +138,10 @@ const uiControlSlice = createSlice({
       })
       // editUser + getuser
       .addCase(usersThunk.editUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      // deleteUser + getuser
+      .addCase(usersThunk.deleteUser.pending, (state) => {
         state.isLoading = true;
       });
   },

@@ -11,7 +11,7 @@ import Card from 'components/Card';
 import Heading from 'components/Heading';
 import { User } from 'models/usersModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { usersThunk } from 'redux/thunks/usersThunk';
 import UserTableActions from './components/UserTableActions';
 import styles from './styles.module.scss';
 

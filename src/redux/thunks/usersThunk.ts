@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { User, UserJiraLoginModel, UserJiraModel, UserJiraModelUpdateModel, UserLoginModel } from 'models/usersModel';
 import { AppDispatch } from 'redux/configureStore';
-import { usersService } from 'services/userService';
+import { usersService } from 'services/usersService';
 
 class UsersThunk {
   signUp = createAsyncThunk<string, UserJiraModel, { rejectValue: string }>(
@@ -58,6 +58,28 @@ class UsersThunk {
     } catch (err) {
       if (axios.isAxiosError(err)) {
         return rejectWithValue(err.response?.data?.message);
+      } else {
+        console.error(err);
+      }
+    } finally {
+      dispatch(this.getuser());
+    }
+  });
+
+  deleteUser = createAsyncThunk<
+    string,
+    number,
+    {
+      rejectValue: string;
+      dispatch: AppDispatch;
+    }
+  >('users/deleteUserAPI', async (id, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await usersService.deleteUser(id);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.content);
       } else {
         console.error(err);
       }

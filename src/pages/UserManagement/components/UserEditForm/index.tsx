@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import InputField from 'components/InputField';
 import { UserJiraModelUpdateModel } from 'models/usersModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { usersThunk } from 'redux/thunks/userThunk';
+import { usersThunk } from 'redux/thunks/usersThunk';
 import styles from './styles.module.scss';
 
 const EditUserSchema = Yup.object().shape({

@@ -24,6 +24,14 @@ class UsersService {
     let url = '/api/Users/editUser';
     return https.put(url, editUser);
   };
+
+  deleteUser = (id: number) => {
+    let url = '/api/Users/deleteUser';
+    if (id) {
+      url = `/api/Users/deleteUser?id=${id}`;
+    }
+    return https.delete(url);
+  };
 }
 
 export const usersService = new UsersService();
