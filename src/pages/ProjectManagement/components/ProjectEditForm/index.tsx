@@ -12,13 +12,13 @@ import { RootState, useAppDispatch } from 'redux/configureStore';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import styles from './styles.module.scss';
 
-const EditProjectSchema = Yup.object().shape({
+const ProjectEditSchema = Yup.object().shape({
   projectName: Yup.string().required('Please provide an issue name.'),
 });
 
 interface Props {}
 
-const EditProjectForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
+const ProjectEditForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   const dispatch = useAppDispatch();
 
   // get projectEdit from redux store
@@ -43,7 +43,7 @@ const EditProjectForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: initialValues,
-    validationSchema: EditProjectSchema,
+    validationSchema: ProjectEditSchema,
     onSubmit: async (values: ProjectUpdateModel) => {
       try {
         await dispatch(projectThunk.updateProject(values)).unwrap();
@@ -109,4 +109,4 @@ const EditProjectForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   );
 });
 
-export default EditProjectForm;
+export default ProjectEditForm;

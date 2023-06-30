@@ -24,7 +24,7 @@ class TaskThunk {
       rejectValue: string;
       state: RootState;
     }
-  >('task/createTask', async (newTask, { dispatch, rejectWithValue, getState }) => {
+  >('task/createTaskAPI', async (newTask, { dispatch, rejectWithValue, getState }) => {
     try {
       const response = await taskService.createTask(newTask);
       return response?.data?.content;
@@ -50,7 +50,7 @@ class TaskThunk {
       rejectValue: string;
       state: RootState;
     }
-  >('task/updateStatus', async (updateStatus, { dispatch, rejectWithValue, getState }) => {
+  >('task/updateStatusAPI', async (updateStatus, { dispatch, rejectWithValue, getState }) => {
     try {
       const response = await taskService.updateStatus(updateStatus);
       return response?.data?.content;
@@ -61,7 +61,7 @@ class TaskThunk {
         return err;
       }
     } finally {
-      dispatch(taskThunk.getTaskDetail(updateStatus?.taskId));
+      dispatch(this.getTaskDetail(updateStatus?.taskId));
       const { projectDetail } = getState().project;
       if (projectDetail?.id) {
         dispatch(projectThunk.getProjectDetail(projectDetail.id));
@@ -77,7 +77,7 @@ class TaskThunk {
       rejectValue: string;
       state: RootState;
     }
-  >('task/updatePriority', async (updatePriority, { dispatch, rejectWithValue, getState }) => {
+  >('task/updatePriorityAPI', async (updatePriority, { dispatch, rejectWithValue, getState }) => {
     try {
       const response = await taskService.updatePriority(updatePriority);
       return response?.data?.content;
@@ -88,7 +88,7 @@ class TaskThunk {
         return err;
       }
     } finally {
-      dispatch(taskThunk.getTaskDetail(updatePriority?.taskId));
+      dispatch(this.getTaskDetail(updatePriority?.taskId));
       const { projectDetail } = getState().project;
       if (projectDetail?.id) {
         dispatch(projectThunk.getProjectDetail(projectDetail.id));
@@ -104,7 +104,7 @@ class TaskThunk {
       rejectValue: string;
       state: RootState;
     }
-  >('task/updateTimeTracking', async (updateTimeTracking, { dispatch, rejectWithValue, getState }) => {
+  >('task/updateTimeTrackingAPI', async (updateTimeTracking, { dispatch, rejectWithValue, getState }) => {
     try {
       const response = await taskService.updateTimeTracking(updateTimeTracking);
       return response?.data?.content;
@@ -115,7 +115,7 @@ class TaskThunk {
         return err;
       }
     } finally {
-      dispatch(taskThunk.getTaskDetail(updateTimeTracking?.taskId));
+      dispatch(this.getTaskDetail(updateTimeTracking?.taskId));
       const { projectDetail } = getState().project;
       if (projectDetail?.id) {
         dispatch(projectThunk.getProjectDetail(projectDetail.id));
@@ -131,7 +131,7 @@ class TaskThunk {
       rejectValue: string;
       state: RootState;
     }
-  >('task/updateEstimate', async (updateEstimate, { dispatch, rejectWithValue, getState }) => {
+  >('task/updateEstimateAPI', async (updateEstimate, { dispatch, rejectWithValue, getState }) => {
     try {
       const response = await taskService.updateEstimate(updateEstimate);
       return response?.data?.content;
@@ -142,7 +142,7 @@ class TaskThunk {
         return err;
       }
     } finally {
-      dispatch(taskThunk.getTaskDetail(updateEstimate?.taskId));
+      dispatch(this.getTaskDetail(updateEstimate?.taskId));
       const { projectDetail } = getState().project;
       if (projectDetail?.id) {
         dispatch(projectThunk.getProjectDetail(projectDetail.id));
@@ -158,7 +158,7 @@ class TaskThunk {
       state: RootState;
       rejectValue: string;
     }
-  >('task/updateTask', async (updateTask, { rejectWithValue, dispatch }) => {
+  >('task/updateTaskAPI', async (updateTask, { rejectWithValue, dispatch }) => {
     try {
       const response = await taskService.updateTask(updateTask);
       return response?.data?.content;
@@ -169,7 +169,7 @@ class TaskThunk {
         return err;
       }
     } finally {
-      dispatch(taskThunk.getTaskDetail(Number(updateTask.taskId)));
+      dispatch(this.getTaskDetail(Number(updateTask.taskId)));
       dispatch(projectThunk.getProjectDetail(updateTask.projectId));
     }
   });
@@ -182,7 +182,7 @@ class TaskThunk {
       state: RootState;
       rejectValue: string;
     }
-  >('task/removeTask', async (taskId, { rejectWithValue, dispatch, getState }) => {
+  >('task/removeTaskAPI', async (taskId, { rejectWithValue, dispatch, getState }) => {
     try {
       const response = await taskService.removeTask(taskId);
       return response?.data?.content;
@@ -206,7 +206,7 @@ class TaskThunk {
     {
       rejectValue: string;
     }
-  >('task/getTaskDetail', async (taskId, { rejectWithValue }) => {
+  >('task/getTaskDetailAPI', async (taskId, { rejectWithValue }) => {
     try {
       const response = await taskService.getTaskDetail(taskId);
       return response?.data?.content;

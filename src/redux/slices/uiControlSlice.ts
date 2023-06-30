@@ -1,6 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { commentThunk } from 'redux/thunks/comment';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import taskThunk from 'redux/thunks/taskThunk';
+import { usersThunk } from 'redux/thunks/userThunk';
 
 export interface UiControlState {
   isLoading: boolean;
@@ -59,6 +61,7 @@ const uiControlSlice = createSlice({
       .addCase(taskThunk.createTask.pending, (state) => {
         state.isLoading = true;
       })
+
       //  --------- getTaskDetail ---------
       .addCase(taskThunk.getTaskDetail.pending, (state) => {
         state.isLoading = true;
@@ -73,6 +76,7 @@ const uiControlSlice = createSlice({
       .addCase(taskThunk.updateTask.pending, (state) => {
         state.isLoading = true;
       })
+
       // --------- getAllProject ---------
       .addCase(projectThunk.getAllProject.pending, (state) => {
         state.isLoading = true;
@@ -97,6 +101,43 @@ const uiControlSlice = createSlice({
       })
       // removeUserFromProject + getAllProject
       .addCase(projectThunk.removeUserFromProject.pending, (state) => {
+        state.isLoading = true;
+      })
+
+      //  --------- getAllComment ---------
+      .addCase(commentThunk.getAll.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(commentThunk.getAll.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(commentThunk.getAll.rejected, (state) => {
+        state.isLoading = false;
+      })
+      // insertComment + getAllComment
+      .addCase(commentThunk.insertComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      // updateComment + getAllComment
+      .addCase(commentThunk.updateComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      // deleteComment + getAllComment
+      .addCase(commentThunk.deleteComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      //  --------- getuser ---------
+      .addCase(usersThunk.getuser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(usersThunk.getuser.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(usersThunk.getuser.rejected, (state) => {
+        state.isLoading = false;
+      })
+      // editUser + getuser
+      .addCase(usersThunk.editUser.pending, (state) => {
         state.isLoading = true;
       });
   },

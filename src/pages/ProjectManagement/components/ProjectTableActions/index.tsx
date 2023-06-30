@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import Card from 'components/Card';
 import { MemberModel, ProjectModel, ProjectUpdateModel, UserProjectModel } from 'models/projectModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { setEditProject } from 'redux/slices/projectSlice';
+import { setProjectEdit } from 'redux/slices/projectSlice';
 import { setOffcanvas, showOffcanvas } from 'redux/slices/uiControlSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import { usersThunk } from 'redux/thunks/userThunk';
@@ -27,14 +27,14 @@ interface Props {
   project: ProjectModel;
 }
 
-const TableActions = ({ project }: Props) => {
+const ProjectTableActions = ({ project }: Props) => {
   const { userLogin, getUserList } = useSelector((state: RootState) => state.users);
   const dispatch = useAppDispatch();
 
   // state of feature which searches and adds a member
   const [searchValue, setSearchValue] = useState('');
 
-  // remove member table data
+  // delete member table data
   const memberColumns: ColumnsType<MemberModel> = [
     {
       title: 'ID',
@@ -62,7 +62,7 @@ const TableActions = ({ project }: Props) => {
         <Button
           type='text'
           icon={<CloseCircleOutlined style={{ color: 'var(--error)' }} />}
-          onClick={() => handleRemoveMember(member)}
+          onClick={() => handleDeleteMember(member)}
         />
       ),
     },
@@ -82,13 +82,13 @@ const TableActions = ({ project }: Props) => {
       description: project.description,
       categoryId: String(project.categoryId),
     };
-    dispatch(setEditProject(projectUpdate));
+    dispatch(setProjectEdit(projectUpdate));
   };
 
-  const handleRemoveProject = async () => {
+  const handleDeleteProject = async () => {
     try {
       const response = await dispatch(projectThunk.deleteProject(project.id)).unwrap();
-      toast.success(`Remove a project ID ${response[0]} successfully.`);
+      toast.success(`Delete a project ID ${response[0]} successfully.`);
     } catch (err) {
       if (typeof err === 'string') {
         if (err === 'Project không phải của bạn đâu đừng delete, nhiều bạn phàn nàn lắm đó !') {
@@ -97,7 +97,7 @@ const TableActions = ({ project }: Props) => {
           toast.error(err);
         }
       } else {
-        toast.error('Failed to remove a project.');
+        toast.error('Failed to delete a project.');
       }
     }
   };
@@ -117,7 +117,7 @@ const TableActions = ({ project }: Props) => {
     }
   };
 
-  const handleRemoveMember = async (record: MemberModel) => {
+  const handleDeleteMember = async (record: MemberModel) => {
     const userProject: UserProjectModel = { projectId: project.id, userId: record.userId };
     try {
       const response = await dispatch(projectThunk.removeUserFromProject(userProject)).unwrap();
@@ -126,7 +126,7 @@ const TableActions = ({ project }: Props) => {
       if (typeof err === 'string') {
         toast.error(err);
       } else {
-        toast.error('Failed to remove a member.');
+        toast.error('Failed to delete a member.');
       }
     }
   };
@@ -147,7 +147,7 @@ const TableActions = ({ project }: Props) => {
           />
         </Tooltip>
 
-        {/* remove project button */}
+        {/* delete project button */}
         <Tooltip
           title={'Delete project'}
           color='#e46a76'
@@ -160,11 +160,11 @@ const TableActions = ({ project }: Props) => {
                 style={{ color: '#e46a76' }}
               />
             }
-            title='Are you sure to remove this project?'
-            okText='Remove'
+            title='Are you sure to delete this project?'
+            okText='Delete'
             cancelText='Cancel'
             okButtonProps={{ style: { background: '#e46a76' } }}
-            onConfirm={handleRemoveProject}
+            onConfirm={handleDeleteProject}
           >
             <Button
               type='text'
@@ -203,9 +203,9 @@ const TableActions = ({ project }: Props) => {
           </Popover>
         </Tooltip>
 
-        {/* remove member button */}
+        {/* delete member button */}
         <Tooltip
-          title={'Remove member'}
+          title={'Delete member'}
           color='#fec90f'
           zIndex={5}
         >
@@ -234,4 +234,4 @@ const TableActions = ({ project }: Props) => {
   );
 };
 
-export default TableActions;
+export default ProjectTableActions;

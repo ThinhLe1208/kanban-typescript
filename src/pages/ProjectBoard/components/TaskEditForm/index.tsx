@@ -23,18 +23,17 @@ import taskThunk from 'redux/thunks/taskThunk';
 import CommentBoard from '../CommentBoard';
 import styles from './styles.module.scss';
 
-const EditTaskSchema = Yup.object().shape({
+const TaskEditSchema = Yup.object().shape({
   taskName: Yup.string().required('Please provide an issue name.'),
 });
 
 interface Props {}
 
-const EditTaskForm = (props: Props) => {
+const TaskEditForm = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const { projectDetail } = useSelector((state: RootState) => state.project);
   const { taskDetail } = useSelector((state: RootState) => state.task);
-  console.log('EditTaskForm ~ taskDetail:', taskDetail);
   const { statusList, priorityList } = useSelector((state: RootState) => state.options);
 
   let [isEditingName, setIsEditingName] = useState(false);
@@ -82,7 +81,7 @@ const EditTaskForm = (props: Props) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit } = useFormik({
     enableReinitialize: true,
     initialValues: initialValues,
-    validationSchema: EditTaskSchema,
+    validationSchema: TaskEditSchema,
     onSubmit: async (values) => {
       try {
         const response = await dispatch(taskThunk.updateTask(values)).unwrap();
@@ -361,7 +360,7 @@ const EditTaskForm = (props: Props) => {
   };
 
   return (
-    <form className={styles.editTaskFormWrapper}>
+    <form className={styles.taskEditFormWrapper}>
       {/* header */}
       <div className={styles.header}>
         {/* left header */}
@@ -548,4 +547,4 @@ const EditTaskForm = (props: Props) => {
   );
 };
 
-export default EditTaskForm;
+export default TaskEditForm;

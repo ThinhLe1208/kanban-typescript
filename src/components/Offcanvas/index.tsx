@@ -6,9 +6,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import OffcanvasTitle from 'components/OffcanvasTitle';
-import CreateTaskForm from 'pages/ProjectBoard/components/CreateTaskForm';
-import EditTaskForm from 'pages/ProjectBoard/components/EditTaskForm';
-import EditProjectForm from 'pages/ProjectManagement/components/EditProjectForm';
+import TaskCreateForm from 'pages/ProjectBoard/components/TaskCreateForm';
+import TaskEditForm from 'pages/ProjectBoard/components/TaskEditForm';
+import ProjectEditForm from 'pages/ProjectManagement/components/ProjectEditForm';
+import UserEditForm from 'pages/UserManagement/components/UserEditForm';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { hideOffcanvas } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
@@ -44,7 +45,7 @@ const Offcanvas = (props: Props) => {
           icon: <EditOutlined />,
           showBtn: true,
           aceptBtnContent: 'Edit',
-          offcanvasContent: <EditProjectForm ref={formRef} />,
+          offcanvasContent: <ProjectEditForm ref={formRef} />,
         });
         break;
       case 1:
@@ -53,7 +54,7 @@ const Offcanvas = (props: Props) => {
           icon: <FontAwesomeIcon icon={faFileCirclePlus} />,
           showBtn: true,
           aceptBtnContent: 'Create',
-          offcanvasContent: <CreateTaskForm ref={formRef} />,
+          offcanvasContent: <TaskCreateForm ref={formRef} />,
         });
         break;
       case 2:
@@ -62,7 +63,16 @@ const Offcanvas = (props: Props) => {
           icon: <FontAwesomeIcon icon={faFilePen} />,
           showBtn: false,
           aceptBtnContent: '',
-          offcanvasContent: <EditTaskForm />,
+          offcanvasContent: <TaskEditForm />,
+        });
+        break;
+      case 3:
+        setData({
+          title: 'Edit User',
+          icon: <EditOutlined />,
+          showBtn: true,
+          aceptBtnContent: 'Edit',
+          offcanvasContent: <UserEditForm ref={formRef} />,
         });
         break;
       default:

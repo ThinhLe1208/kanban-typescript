@@ -14,6 +14,7 @@ interface Props {
   type?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onBlur: FocusEventHandler<HTMLInputElement>;
+  disabled?: boolean;
 }
 
 const InputField = ({
@@ -26,6 +27,7 @@ const InputField = ({
   type = 'text',
   onChange,
   onBlur,
+  disabled,
 }: Props) => {
   return (
     <div className={styles.inputFieldWrapper}>
@@ -46,6 +48,7 @@ const InputField = ({
         onBlur={onBlur}
         status={error && touched ? 'error' : ''}
         style={{ width: '100%' }}
+        disabled={disabled}
       />
       {error && touched && <ErrorMessage content={error} />}
     </div>

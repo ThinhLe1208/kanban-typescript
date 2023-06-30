@@ -17,13 +17,13 @@ import taskThunk from 'redux/thunks/taskThunk';
 import styles from './styles.module.scss';
 import { hideOffcanvas } from 'redux/slices/uiControlSlice';
 
-const CreateTaskSchema = Yup.object().shape({
+const TaskCreateSchema = Yup.object().shape({
   taskName: Yup.string().required('Please provide an issue name.'),
 });
 
 interface Props {}
 
-const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
+const TaskCreateForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   const { projectDetail } = useSelector((state: RootState) => state.project);
   const { taskTypeList, priorityList, statusList } = useSelector((state: RootState) => state.options);
   const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: initialValues,
-    validationSchema: CreateTaskSchema,
+    validationSchema: TaskCreateSchema,
     onSubmit: async (values) => {
       const newTask: TaskInsertModel = {
         ...values,
@@ -71,7 +71,7 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   });
 
   return (
-    <div className={styles.createTaskFormWrapper}>
+    <div className={styles.taskCreateFormWrapper}>
       <form
         ref={ref}
         onSubmit={handleSubmit}
@@ -218,4 +218,4 @@ const CreateTaskForm = forwardRef<HTMLFormElement, Props>((props, ref) => {
   );
 });
 
-export default CreateTaskForm;
+export default TaskCreateForm;

@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 
 interface Props {}
 
-const ProjectTemplate = (props: Props) => {
+const AppTemplate = (props: Props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const ProjectTemplate = (props: Props) => {
   // }
 
   return (
-    <Layout className={styles.wrapper}>
+    <Layout className={styles.appTemplateWrapper}>
       <Sidebar />
 
       <Layout className={styles.content}>
@@ -40,4 +40,4 @@ const ProjectTemplate = (props: Props) => {
   );
 };
 
-export default ProjectTemplate;
+export default AppTemplate;

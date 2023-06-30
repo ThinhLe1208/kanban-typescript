@@ -19,8 +19,8 @@ const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    setEditProject: (state, { payload: newEditProject }) => {
-      state.projectEdit = newEditProject;
+    setProjectEdit: (state, { payload: newProjectEdit }) => {
+      state.projectEdit = newProjectEdit;
     },
   },
   extraReducers: (builder) => {
@@ -36,6 +36,6 @@ const projectSlice = createSlice({
   },
 });
 
-export const { setEditProject } = projectSlice.actions;
+export const { setProjectEdit } = projectSlice.actions;
 
 export default projectSlice.reducer;

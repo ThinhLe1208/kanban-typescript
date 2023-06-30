@@ -43,7 +43,7 @@ const SignIn = (props: Props) => {
         storage.setStorageJson(ACCESS_TOKEN, response?.accessToken);
         storage.setCookieJson(USER_LOGIN, response, 30);
         toast.success('Sign in successfully.');
-        navigate('/project/management');
+        navigate('/project');
       } catch (err) {
         if (typeof err === 'string') {
           if (err === 'Email không tồn tại !') {

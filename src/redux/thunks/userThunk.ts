@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { User, UserJiraLoginModel, UserJiraModel, UserLoginModel } from 'models/usersModel';
+import { User, UserJiraLoginModel, UserJiraModel, UserJiraModelUpdateModel, UserLoginModel } from 'models/usersModel';
+import { AppDispatch } from 'redux/configureStore';
 import { usersService } from 'services/userService';
 
 class UsersThunk {
@@ -37,10 +38,32 @@ class UsersThunk {
     }
   );
 
-  getuser = createAsyncThunk('users/getuserAPI', async (keyword: string) => {
+  getuser = createAsyncThunk('users/getuserAPI', async (keyword: string | undefined) => {
     const response = await usersService.getuser(keyword);
     return response?.data?.content as User[];
     // let interceptors.response handles an error
+  });
+
+  editUser = createAsyncThunk<
+    string,
+    UserJiraModelUpdateModel,
+    {
+      rejectValue: string;
+      dispatch: AppDispatch;
+    }
+  >('users/editUserAPI', async (editUser, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await usersService.editUser(editUser);
+      return response?.data?.content;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data?.message);
+      } else {
+        console.error(err);
+      }
+    } finally {
+      dispatch(this.getuser());
+    }
   });
 }
 

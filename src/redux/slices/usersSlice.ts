@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { User, UserLoginModel } from 'models/usersModel';
+import { User, UserJiraModelUpdateModel, UserLoginModel } from 'models/usersModel';
 import { usersThunk } from 'redux/thunks/userThunk';
 import { USER_LOGIN } from 'utils/constants/settingSystem';
 import storage from 'utils/storage';
@@ -8,19 +8,25 @@ import storage from 'utils/storage';
 export interface UsersState {
   userLogin: UserLoginModel | undefined;
   getUserList: User[];
+  userEdit: UserJiraModelUpdateModel | undefined;
   //   getUserByProjectId: [];
 }
 
 const initialState = {
   userLogin: storage.getStorageJson(USER_LOGIN),
   getUserList: [],
+  userEdit: undefined,
   //   getUserByProjectId: [],
 } as UsersState;
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    setUserEdit: (state, { payload: newUserEdit }) => {
+      state.userEdit = newUserEdit;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // signIn
@@ -34,6 +40,6 @@ const usersSlice = createSlice({
   },
 });
 
-// export const {} = usersSlice.actions;
+export const { setUserEdit } = usersSlice.actions;
 
 export default usersSlice.reducer;

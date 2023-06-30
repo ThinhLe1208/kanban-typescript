@@ -1,3 +1,4 @@
+// getAll
 export type CommentModel = {
   user: CommnentUserModel;
   id: number;
@@ -12,4 +13,10 @@ export type CommnentUserModel = {
   userId: number;
   name: string;
   avatar: string;
+};
+
+// insertComment
+export type CommentModelInsertModel = {
+  taskId: number;
+  contentComment: string;
 };

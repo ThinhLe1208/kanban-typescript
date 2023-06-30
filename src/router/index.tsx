@@ -1,13 +1,14 @@
 import ErrorPage from 'pages/ErrorPage';
 import { createBrowserRouter } from 'react-router-dom';
 
-import SignIn from 'pages/SingIn';
-import SignUp from 'pages/SignUp';
-import AuthTemplate from 'templates/AuthTemplate';
-import ProjectTemplate from 'templates/ProjectTemplate';
-import ProjectManagement from 'pages/ProjectManagement';
 import ProjectBoard from 'pages/ProjectBoard';
 import ProjectCreate from 'pages/ProjectCreate';
+import ProjectManagement from 'pages/ProjectManagement';
+import SignUp from 'pages/SignUp';
+import SignIn from 'pages/SingIn';
+import UserManagement from 'pages/UserManagement';
+import AppTemplate from 'templates/AppTemplate';
+import AuthTemplate from 'templates/AuthTemplate';
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/project',
-    element: <ProjectTemplate />,
+    element: <AppTemplate />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -39,16 +40,23 @@ export const router = createBrowserRouter([
         element: <ProjectManagement />,
       },
       {
-        path: 'management',
-        element: <ProjectManagement />,
-      },
-      {
-        path: 'board/:projectId',
+        path: ':projectId',
         element: <ProjectBoard />,
       },
       {
         path: 'create',
         element: <ProjectCreate />,
+      },
+    ],
+  },
+  {
+    path: '/users',
+    element: <AppTemplate />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <UserManagement />,
       },
     ],
   },

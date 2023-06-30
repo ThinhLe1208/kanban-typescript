@@ -1,4 +1,4 @@
-import { ClusterOutlined, FileAddOutlined, LayoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { ClusterOutlined, FileAddOutlined, LayoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ const Sidebar = (props: Props) => {
 
   const itemsTop: MenuProps['items'] = [
     {
-      label: <Link to='/project/board/12925'>Project board</Link>,
+      label: <Link to='/project/12925'>Project board</Link>,
       key: 'board',
       icon: <LayoutOutlined className={styles.icon} />,
     },
@@ -32,9 +32,14 @@ const Sidebar = (props: Props) => {
       icon: <FileAddOutlined className={styles.icon} />,
     },
     {
-      label: <Link to='/project/management'>Project management</Link>,
-      key: 'management',
+      label: <Link to='/project'>Project management</Link>,
+      key: 'projectManagement',
       icon: <ClusterOutlined className={styles.icon} />,
+    },
+    {
+      label: <Link to='/users'>Users management</Link>,
+      key: 'usersManagement',
+      icon: <UserOutlined className={styles.icon} />,
     },
   ];
 

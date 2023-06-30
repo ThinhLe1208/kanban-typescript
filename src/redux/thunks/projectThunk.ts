@@ -18,7 +18,7 @@ class ProjectThunk {
     {
       rejectValue: string;
     }
-  >('project/createProjectAuthorize', async (projectInsert, { rejectWithValue }) => {
+  >('project/createProjectAuthorizeAPI', async (projectInsert, { rejectWithValue }) => {
     try {
       const response = await projectService.createProjectAuthorize(projectInsert);
       return response?.data?.content;
@@ -37,7 +37,7 @@ class ProjectThunk {
     {
       rejectValue: string;
     }
-  >('project/getProjectDetail', async (id, { rejectWithValue }) => {
+  >('project/getProjectDetailAPI', async (id, { rejectWithValue }) => {
     try {
       const response = await projectService.getProjectDetail(id);
       return response?.data?.content;
@@ -50,7 +50,7 @@ class ProjectThunk {
     }
   });
 
-  getAllProject = createAsyncThunk('project/getAllProject', async (keyword: string | undefined) => {
+  getAllProject = createAsyncThunk('project/getAllProjectAPI', async (keyword: string | undefined) => {
     const response = await projectService.getAllProject(keyword);
     return response?.data?.content as ProjectModel[];
     // let interceptors.response handles an error
@@ -63,7 +63,7 @@ class ProjectThunk {
       dispatch: AppDispatch;
       rejectValue: string;
     }
-  >('project/deleteProject', async (projectId, { dispatch, rejectWithValue }) => {
+  >('project/deleteProjectAPI', async (projectId, { dispatch, rejectWithValue }) => {
     try {
       const response = await projectService.deleteProject(projectId);
       return response?.data?.content;
@@ -85,7 +85,7 @@ class ProjectThunk {
       dispatch: AppDispatch;
       rejectValue: string;
     }
-  >('project/updateProject', async (projectUpdate, { dispatch, rejectWithValue }) => {
+  >('project/updateProjectAPI', async (projectUpdate, { dispatch, rejectWithValue }) => {
     try {
       const response = await projectService.updateProject(projectUpdate);
       return response?.data?.content;
@@ -107,7 +107,7 @@ class ProjectThunk {
       dispatch: AppDispatch;
       rejectValue: string;
     }
-  >('project/assignUserProject', async (project, { dispatch, rejectWithValue }) => {
+  >('project/assignUserProjectAPI', async (project, { dispatch, rejectWithValue }) => {
     try {
       const response = await projectService.assignUserProject(project);
       return response?.data?.content;
@@ -129,7 +129,7 @@ class ProjectThunk {
       dispatch: AppDispatch;
       rejectValue: string;
     }
-  >('project/removeUserFromProject', async (project, { dispatch, rejectWithValue }) => {
+  >('project/removeUserFromProjectAPI', async (project, { dispatch, rejectWithValue }) => {
     try {
       const response = await projectService.removeUserFromProject(project);
       return response?.data?.content;

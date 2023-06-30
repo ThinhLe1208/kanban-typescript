@@ -25,9 +25,7 @@ const EditorField = ({ label, name, height = 200, value, setFieldValue }: Props)
         id={name}
         apiKey={TINY_KEY}
         value={value}
-        onEditorChange={(value: string) => {
-          setFieldValue(name, value);
-        }}
+        onEditorChange={(value: string) => setFieldValue(name, value)}
         init={{
           height: height,
           menubar: false,

@@ -29,3 +29,12 @@ export type User = {
   email: string;
   phoneNumber: string;
 };
+
+// editUser
+export type UserJiraModelUpdateModel = {
+  id: string;
+  passWord: string;
+  email: string;
+  name: string;
+  phoneNumber: string;
+};

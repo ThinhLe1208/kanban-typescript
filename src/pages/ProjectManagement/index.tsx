@@ -15,16 +15,12 @@ import { ProjectModel } from 'models/projectModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { OptionsState } from 'redux/slices/optionsSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
-import TableActions from './components/TableActions';
+import ProjectTableActions from './components/ProjectTableActions';
 import styles from './styles.module.scss';
 
-type DataIndex = keyof ProjectModel;
+const breadCrumbList = [{ href: '/', title: 'Home' }, { title: 'Project Management' }];
 
-const breadCrumbList = [
-  { href: '/', title: 'Home' },
-  { href: '/project', title: 'Project' },
-  { title: 'Project Management' },
-];
+type DataIndex = keyof ProjectModel;
 
 type Props = {};
 
@@ -93,17 +89,6 @@ const ProjectManagement = (props: Props) => {
             type='link'
             size='small'
             onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type='link'
-            size='small'
-            onClick={() => {
               close();
             }}
           >
@@ -167,7 +152,7 @@ const ProjectManagement = (props: Props) => {
       render: (text, record) => {
         return (
           <Link
-            to={`/project/board/${record.id}`}
+            to={`/project/${record.id}`}
             style={{ cursor: 'pointer', fontWeight: '600' }}
           >
             {text}
@@ -264,7 +249,7 @@ const ProjectManagement = (props: Props) => {
       dataIndex: '',
       key: 'actions',
       width: 200,
-      render: (_, record) => <TableActions project={record} />,
+      render: (_, record) => <ProjectTableActions project={record} />,
     },
   ];
 

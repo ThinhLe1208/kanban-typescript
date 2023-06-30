@@ -1,4 +1,4 @@
-import { UserJiraLoginModel, UserJiraModel } from 'models/usersModel';
+import { UserJiraLoginModel, UserJiraModel, UserJiraModelUpdateModel } from 'models/usersModel';
 import { https } from './baseService';
 
 class UsersService {
@@ -12,12 +12,17 @@ class UsersService {
     return https.post(url, signInFormValues);
   };
 
-  getuser = (keyword: string) => {
+  getuser = (keyword: string | undefined) => {
     let url = '/api/Users/getUser';
     if (keyword) {
       url = `/api/Users/getUser?keyword=${keyword}`;
     }
     return https.get(url);
+  };
+
+  editUser = (editUser: UserJiraModelUpdateModel) => {
+    let url = '/api/Users/editUser';
+    return https.put(url, editUser);
   };
 }
 
