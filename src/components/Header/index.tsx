@@ -2,7 +2,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { faBell, faMessage } from '@fortawesome/free-regular-svg-icons';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, Badge, Button, Popover } from 'antd';
+import { Avatar, Badge, Button, Layout, Popover } from 'antd';
 import { useSelector } from 'react-redux';
 
 import UserPopover from 'components/UserPopover';
@@ -19,7 +19,7 @@ const Header = (props: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={styles.headerWrapper}>
+    <Layout.Header className={styles.headerWrapper}>
       <div className={styles.leftSide}>
         <Button
           className={styles.sidebarBtn + ' ' + styles.iconBtn}
@@ -82,7 +82,7 @@ const Header = (props: Props) => {
               src={userLogin?.avatar}
             />
 
-            <span>
+            <span className={styles.greeting}>
               Hi, <span className={styles.name}>{userLogin?.name}</span>
             </span>
 
@@ -90,7 +90,7 @@ const Header = (props: Props) => {
           </Button>
         </Popover>
       </div>
-    </div>
+    </Layout.Header>
   );
 };
 

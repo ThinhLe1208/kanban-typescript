@@ -254,12 +254,10 @@ const ProjectManagement = (props: Props) => {
 
   return (
     <div className={styles.projectManagementWrapper}>
-      <div className={styles.heading}>
-        <Heading
-          breadCrumbList={breadCrumbList}
-          title={'Project Management'}
-        />
-      </div>
+      <Heading
+        breadCrumbList={breadCrumbList}
+        title={'Project Management'}
+      />
 
       {/* rowKey fix error 'child need key' */}
       <Card className={styles.card}>

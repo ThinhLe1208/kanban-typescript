@@ -7,6 +7,7 @@ import Sidebar from 'components/Sidebar';
 import { useAppDispatch } from 'redux/configureStore';
 import { optionsThunk } from 'redux/thunks/optionsThunk';
 import styles from './styles.module.scss';
+import { Content } from 'antd/es/layout/layout';
 
 interface Props {}
 
@@ -27,14 +28,18 @@ const AppTemplate = (props: Props) => {
   // }
 
   return (
-    <Layout className={styles.appTemplateWrapper}>
+    <Layout
+      className={styles.appTemplateWrapper}
+      hasSider
+    >
       <Sidebar />
 
-      <Layout className={styles.content}>
+      <Layout className={styles.body}>
         <Header />
-        <div className={styles.outlet}>
+
+        <Content>
           <Outlet />
-        </div>
+        </Content>
       </Layout>
     </Layout>
   );

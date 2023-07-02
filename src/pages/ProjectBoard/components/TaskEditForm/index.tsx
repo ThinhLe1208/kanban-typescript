@@ -2,7 +2,7 @@ import { DeleteOutlined, LinkOutlined, SendOutlined } from '@ant-design/icons';
 import { faBug, faCircleQuestion, faSquareCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Col, Divider, Popconfirm, Popover, Row, Space } from 'antd';
-import { useFormik } from 'formik';
+import { FormikProps, useFormik } from 'formik';
 import parse from 'html-react-parser';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -78,34 +78,35 @@ const TaskEditForm = (props: Props) => {
     }
   }, [taskDetail]);
 
-  const { values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit } = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
-    validationSchema: TaskEditSchema,
-    onSubmit: async (values) => {
-      try {
-        const response = await dispatch(taskThunk.updateTask(values)).unwrap();
-        toast.success('Update task successfully.');
-        // taskName
-        setIsEditingName(false);
-        setContentName(response.taskName);
-        // description
-        setIsEditingDes(false);
-        setContentEditor(response.description);
-      } catch (err) {
-        if (typeof err === 'string') {
-          if (err === 'Task is not found!') {
-            toast.error('Task is not found.');
+  const { values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit }: FormikProps<TaskEditModel> =
+    useFormik<TaskEditModel>({
+      enableReinitialize: true,
+      initialValues: initialValues,
+      validationSchema: TaskEditSchema,
+      onSubmit: async (values) => {
+        try {
+          const response = await dispatch(taskThunk.updateTask(values)).unwrap();
+          toast.success('Update task successfully.');
+          // taskName
+          setIsEditingName(false);
+          setContentName(response.taskName);
+          // description
+          setIsEditingDes(false);
+          setContentEditor(response.description);
+        } catch (err) {
+          if (typeof err === 'string') {
+            if (err === 'Task is not found!') {
+              toast.error('Task is not found.');
+            } else {
+              toast.error(err);
+            }
           } else {
-            toast.error(err);
+            toast.error('Failed to update.');
+            console.error(err);
           }
-        } else {
-          toast.error('Failed to update.');
-          console.error(err);
         }
-      }
-    },
-  });
+      },
+    });
 
   const items = [
     {

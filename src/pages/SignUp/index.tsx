@@ -3,7 +3,7 @@ import { faApple, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'antd';
 import { useFormik } from 'formik';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -67,12 +67,12 @@ const SignUp = (props: Props) => {
           onSubmit={handleSubmit}
         >
           <div className={styles.header}>
-            <h3>Welcome to Bankan</h3>
+            <h3>Welcome to Kanban</h3>
             <div>
               <span className={styles.question}>Already have an Account?</span>
-              <NavLink to='/signin'>
-                <Button type='link'>Sign In</Button>
-              </NavLink>
+              <Button type='link'>
+                <Link to='/signin'>Sign In</Link>
+              </Button>
             </div>
           </div>
 

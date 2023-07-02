@@ -13,6 +13,7 @@ export const https = axios.create({
 https.interceptors.request.use(
   (config) => {
     const isLogin = storage.checkLogin();
+    console.log('isLogin:', isLogin);
     if (isLogin) {
       config.headers.Authorization = 'Bearer ' + storage.getStorageJson(ACCESS_TOKEN);
     }

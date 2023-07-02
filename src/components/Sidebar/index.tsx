@@ -1,19 +1,20 @@
-import { ClusterOutlined, FileAddOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { ClusterOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
 import { RootState } from 'redux/configureStore';
 import { UiControlState } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
 
-type Props = {};
+interface Props {}
 
 const Sidebar = (props: Props) => {
   const { isCollapsed }: UiControlState = useSelector((state: RootState) => state.uiControl);
   const [selectedMenuItem, setSelectedMenuItem] = useState('board');
+  const [collapsedWidth, setCollapsedWidth] = useState(80);
   const href = useLocation();
 
   // find sidebar active item
@@ -22,6 +23,21 @@ const Sidebar = (props: Props) => {
     if (!key) return;
     setSelectedMenuItem(key);
   }, [href]);
+
+  // get a current screenwidth to make website responsive with the ant library
+  useEffect(() => {
+    const handleSetScreenWidth = () => {
+      window.innerWidth <= 576 ? setCollapsedWidth(0) : setCollapsedWidth(80);
+    };
+
+    window.addEventListener('load', handleSetScreenWidth);
+    window.addEventListener('resize', handleSetScreenWidth);
+
+    return () => {
+      window.removeEventListener('load', handleSetScreenWidth);
+      window.removeEventListener('resize', handleSetScreenWidth);
+    };
+  }, []);
 
   const itemsTop: MenuProps['items'] = [
     {
@@ -39,42 +55,35 @@ const Sidebar = (props: Props) => {
       key: 'users',
       icon: <UserOutlined className={styles.icon} />,
     },
-    {
-      label: 'Options',
-      key: 'options',
-      icon: <SettingOutlined className={styles.icon} />,
-    },
   ];
 
   return (
-    <div className={styles.sidebarWrapper}>
-      <Layout.Sider
-        className={styles.sidebar}
-        collapsedWidth={80}
-        width={210}
-        trigger={null}
-        collapsible
-        collapsed={isCollapsed}
-        style={{
-          transition: 'all ease 0.2s',
-        }}
-      >
-        <img
-          className={styles.logo}
-          src={require('../../assets/images/logo_jira.png')}
-          alt='logo_jira'
-        />
+    <Layout.Sider
+      className={styles.sidebarWrapper}
+      collapsedWidth={collapsedWidth}
+      width={210}
+      trigger={null}
+      collapsible
+      collapsed={isCollapsed}
+      style={{
+        background: '#fff',
+      }}
+    >
+      <img
+        className={styles.logo}
+        src={require('assets/images/logo_jira.png')}
+        alt='logo_jira'
+      />
 
-        <div className={styles.menu}>
-          <Menu
-            mode='inline'
-            items={itemsTop}
-            selectedKeys={[selectedMenuItem]}
-            style={{ border: 'none' }}
-          />
-        </div>
-      </Layout.Sider>
-    </div>
+      <div className={styles.menu}>
+        <Menu
+          mode='inline'
+          items={itemsTop}
+          selectedKeys={[selectedMenuItem]}
+          style={{ border: 'none' }}
+        />
+      </div>
+    </Layout.Sider>
   );
 };
 

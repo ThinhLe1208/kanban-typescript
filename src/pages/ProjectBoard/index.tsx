@@ -49,12 +49,10 @@ const ProjectBoard = (props: Props) => {
 
   return (
     <div className={styles.projectBoardWrapper}>
-      <div className={styles.heading}>
-        <Heading
-          breadCrumbList={breadCrumbList}
-          title={projectDetail?.projectName}
-        />
-      </div>
+      <Heading
+        breadCrumbList={breadCrumbList}
+        title={projectDetail?.projectName}
+      />
 
       <div className={styles.detail}>
         <BoardDetail />

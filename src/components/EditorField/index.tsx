@@ -1,8 +1,7 @@
-import React from 'react';
-
-import styles from './styles.module.scss';
 import { Editor } from '@tinymce/tinymce-react';
+
 import { TINY_KEY } from 'utils/constants/settingSystem';
+import styles from './styles.module.scss';
 
 type Props = {
   label?: string;

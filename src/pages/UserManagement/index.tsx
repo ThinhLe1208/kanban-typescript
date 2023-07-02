@@ -167,19 +167,17 @@ const UserManagement = (props: Props) => {
       title: 'Actions',
       dataIndex: '',
       key: 'actions',
-      width: 200,
+      width: 140,
       render: (_, record) => <UserTableActions user={record} />,
     },
   ];
 
   return (
     <div className={styles.usersManagementWrapper}>
-      <div className={styles.heading}>
-        <Heading
-          breadCrumbList={breadCrumbList}
-          title={'Users Management'}
-        />
-      </div>
+      <Heading
+        breadCrumbList={breadCrumbList}
+        title={'Users Management'}
+      />
 
       {/* rowKey fix error 'child need key' */}
       <Card className={styles.card}>

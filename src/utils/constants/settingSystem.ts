@@ -11,3 +11,4 @@ export const REMEMBER_USER = 'REMEMBER_ME';
 
 // TinyMCE
 export const TINY_KEY = '64iv1bamj3ly5fr482iq34ud6xb2ebvhmf30hyzbx11eauzq';
+export const FB_APP_ID = '259894119932234';

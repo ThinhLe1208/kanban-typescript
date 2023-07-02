@@ -31,12 +31,17 @@
 
       .question {
         color: var(--sub-text-color);
+        margin-right: 10px;
       }
 
       button {
+        padding: 0;
+      }
+
+      a {
+        color: var(--bg-primary);
         font-size: 16px;
         font-weight: 500;
-        margin-left: -6px;
       }
     }
 
@@ -50,11 +55,16 @@
 
       .checkBox {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
 
         button {
           padding: 0;
+        }
+
+        a {
+          color: var(--bg-primary);
         }
       }
     }

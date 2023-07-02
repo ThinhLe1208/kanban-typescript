@@ -3,7 +3,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--wrapper-padding-x);
+  background: #f5f5f5;
+  padding: 0;
 
   .iconBtn {
     font-size: 22px;
@@ -47,8 +48,16 @@
       column-gap: 6px;
       padding: 20px 6px;
 
-      .name {
-        font-weight: 700;
+      .greeting {
+        display: block;
+
+        @media only screen and (max-width: 576px) {
+          display: none;
+        }
+
+        .name {
+          font-weight: 700;
+        }
       }
     }
   }

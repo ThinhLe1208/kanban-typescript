@@ -60,12 +60,10 @@ const ProjectCreate = (props: Props) => {
 
   return (
     <div className={styles.projectCreateWrapper}>
-      <div className={styles.heading}>
-        <Heading
-          breadCrumbList={breadCrumbList}
-          title='Create Project'
-        />
-      </div>
+      <Heading
+        breadCrumbList={breadCrumbList}
+        title='Create Project'
+      />
 
       <Card className={styles.card}>
         <form

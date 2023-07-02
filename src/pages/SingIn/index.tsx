@@ -4,16 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Checkbox } from 'antd';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import Card from 'components/Card';
 import InputField from 'components/InputField';
 import { UserJiraLoginModel } from 'models/usersModel';
+import { Link } from 'react-router-dom';
 import { useAppDispatch } from 'redux/configureStore';
 import { usersThunk } from 'redux/thunks/usersThunk';
-import { ACCESS_TOKEN, USER_LOGIN } from 'utils/constants/settingSystem';
+import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants/settingSystem';
 import storage from 'utils/storage';
 import styles from './styles.module.scss';
 
@@ -30,17 +31,20 @@ const SignIn = (props: Props) => {
   const navigate = useNavigate();
 
   // Formik
+  const initialValues: UserJiraLoginModel = {
+    email: '',
+    passWord: '',
+  };
+
   const { values, errors, touched, handleSubmit, handleChange, handleBlur } = useFormik({
-    initialValues: {
-      email: '',
-      passWord: '',
-    },
+    initialValues: initialValues,
     validationSchema: SignInSchema,
-    onSubmit: async (values: UserJiraLoginModel) => {
+    onSubmit: async (values) => {
       try {
         const response = await dispatch(usersThunk.signIn(values)).unwrap();
         storage.setStorageJson(USER_LOGIN, response);
         storage.setStorageJson(ACCESS_TOKEN, response?.accessToken);
+        storage.setStorageJson(REMEMBER_USER, isRemember);
         storage.setCookieJson(USER_LOGIN, response, 30);
         toast.success('Sign in successfully.');
         navigate('/project');
@@ -71,9 +75,9 @@ const SignIn = (props: Props) => {
             <h3>Welcome to Kanban</h3>
             <div>
               <span className={styles.question}>New to Kanban?</span>
-              <NavLink to='/signup'>
-                <Button type='link'>Create an account</Button>
-              </NavLink>
+              <Button type='link'>
+                <Link to='/signup'>Create an account</Link>
+              </Button>
             </div>
           </div>
 
@@ -104,12 +108,14 @@ const SignIn = (props: Props) => {
             <div className={styles.checkBox}>
               <Checkbox
                 checked={isRemember}
-                onChange={() => setIsRemember(!isRemember)}
+                onChange={(e) => setIsRemember(e.target.checked)}
               >
                 Remember me
               </Checkbox>
 
-              <Button type='link'>Forgot password</Button>
+              <Button type='link'>
+                <Link to='#'>Forgot password</Link>
+              </Button>
             </div>
 
             <Button
@@ -134,12 +140,14 @@ const SignIn = (props: Props) => {
               >
                 <GoogleOutlined />
               </button>
+
               <button
                 type='button'
                 className={styles.button}
               >
                 <FontAwesomeIcon icon={faFacebook} />
               </button>
+
               <button
                 type='button'
                 className={styles.button}
