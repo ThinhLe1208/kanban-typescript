@@ -5,6 +5,7 @@ import taskThunk from 'redux/thunks/taskThunk';
 import { usersThunk } from 'redux/thunks/usersThunk';
 
 export interface UiControlState {
+  screenWidth: number;
   isLoading: boolean;
   isCollapsed: boolean;
   isOpen: boolean;
@@ -12,6 +13,7 @@ export interface UiControlState {
 }
 
 const initialState = {
+  screenWidth: 1920,
   isLoading: false,
   // the left sidebar
   isCollapsed: true,
@@ -24,6 +26,9 @@ const uiControlSlice = createSlice({
   name: 'uiControl',
   initialState,
   reducers: {
+    setScreenWidth: (state, { payload: screenWidth }) => {
+      state.screenWidth = screenWidth;
+    },
     showLoading: (state) => {
       state.isLoading = true;
     },
@@ -147,7 +152,7 @@ const uiControlSlice = createSlice({
   },
 });
 
-export const { showLoading, hideLoading, setSidebar, showOffcanvas, hideOffcanvas, setOffcanvas } =
+export const { setScreenWidth, showLoading, hideLoading, setSidebar, showOffcanvas, hideOffcanvas, setOffcanvas } =
   uiControlSlice.actions;
 
 export default uiControlSlice.reducer;

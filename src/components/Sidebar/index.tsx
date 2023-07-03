@@ -6,15 +6,13 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import { RootState } from 'redux/configureStore';
-import { UiControlState } from 'redux/slices/uiControlSlice';
 import styles from './styles.module.scss';
 
 interface Props {}
 
 const Sidebar = (props: Props) => {
-  const { isCollapsed }: UiControlState = useSelector((state: RootState) => state.uiControl);
+  const { screenWidth, isCollapsed } = useSelector((state: RootState) => state.uiControl);
   const [selectedMenuItem, setSelectedMenuItem] = useState('board');
-  const [collapsedWidth, setCollapsedWidth] = useState(80);
   const href = useLocation();
 
   // find sidebar active item
@@ -23,21 +21,6 @@ const Sidebar = (props: Props) => {
     if (!key) return;
     setSelectedMenuItem(key);
   }, [href]);
-
-  // get a current screenwidth to make website responsive with the ant library
-  useEffect(() => {
-    const handleSetScreenWidth = () => {
-      window.innerWidth <= 576 ? setCollapsedWidth(0) : setCollapsedWidth(80);
-    };
-
-    window.addEventListener('load', handleSetScreenWidth);
-    window.addEventListener('resize', handleSetScreenWidth);
-
-    return () => {
-      window.removeEventListener('load', handleSetScreenWidth);
-      window.removeEventListener('resize', handleSetScreenWidth);
-    };
-  }, []);
 
   const itemsTop: MenuProps['items'] = [
     {
@@ -60,7 +43,7 @@ const Sidebar = (props: Props) => {
   return (
     <Layout.Sider
       className={styles.sidebarWrapper}
-      collapsedWidth={collapsedWidth}
+      collapsedWidth={screenWidth <= 576 ? 0 : 80}
       width={210}
       trigger={null}
       collapsible

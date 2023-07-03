@@ -29,6 +29,7 @@ interface Props {
 
 const ProjectTableActions = ({ project }: Props) => {
   const { userLogin, getUserList } = useSelector((state: RootState) => state.users);
+  const { screenWidth } = useSelector((state: RootState) => state.uiControl);
   const dispatch = useAppDispatch();
 
   // state of feature which searches and adds a member
@@ -210,7 +211,7 @@ const ProjectTableActions = ({ project }: Props) => {
           zIndex={5}
         >
           <Popover
-            placement='left'
+            placement={screenWidth <= 576 ? 'bottomRight' : 'left'}
             content={() => (
               <Card style={{ padding: '0' }}>
                 <Table

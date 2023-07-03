@@ -13,7 +13,6 @@ import Card from 'components/Card';
 import Heading from 'components/Heading';
 import { ProjectModel } from 'models/projectModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
-import { OptionsState } from 'redux/slices/optionsSlice';
 import { projectThunk } from 'redux/thunks/projectThunk';
 import ProjectTableActions from './components/ProjectTableActions';
 import styles from './styles.module.scss';
@@ -26,7 +25,8 @@ type Props = {};
 
 const ProjectManagement = (props: Props) => {
   const { projectList } = useSelector((state: RootState) => state.project);
-  const { projectCategoryList }: OptionsState = useSelector((state: RootState) => state.options);
+  const { projectCategoryList } = useSelector((state: RootState) => state.options);
+  const { screenWidth } = useSelector((state: RootState) => state.uiControl);
   const dispatch = useAppDispatch();
 
   // default state of a table antd library
@@ -135,7 +135,7 @@ const ProjectManagement = (props: Props) => {
       render: (text) => <span style={{ color: 'var(--sub-text-color)' }}>{text}</span>,
     },
     {
-      title: 'Project Name',
+      title: 'Name',
       dataIndex: 'projectName',
       key: 'projectName',
       ...getColumnSearchProps('projectName'),
@@ -247,6 +247,7 @@ const ProjectManagement = (props: Props) => {
       title: 'Actions',
       dataIndex: '',
       key: 'actions',
+      align: screenWidth <= 576 ? 'right' : 'left',
       width: 200,
       render: (_, record) => <ProjectTableActions project={record} />,
     },

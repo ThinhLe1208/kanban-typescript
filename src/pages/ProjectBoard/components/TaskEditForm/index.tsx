@@ -367,7 +367,7 @@ const TaskEditForm = (props: Props) => {
         {/* left header */}
         <Button
           type='text'
-          style={{ color: 'var(--sub-text-color)', marginLeft: '-16px' }}
+          style={{ color: 'var(--sub-text-color)' }}
         >
           {taskDetail?.taskTypeDetail?.id === 2 ? items[0].label : items[1].label}-{taskDetail?.taskId}
         </Button>
@@ -393,8 +393,8 @@ const TaskEditForm = (props: Props) => {
                 style={{ color: '#e46a76' }}
               />
             }
-            title='Are you sure to remove this issue?'
-            okText='Remove'
+            title='Are you sure to delete this issue?'
+            okText='Delete'
             cancelText='Cancel'
             okButtonProps={{ style: { background: '#e46a76' } }}
             onConfirm={handleDeleteTask}
@@ -402,7 +402,9 @@ const TaskEditForm = (props: Props) => {
             <Button
               type='text'
               icon={<DeleteOutlined />}
-            />
+            >
+              Delete
+            </Button>
           </Popconfirm>
         </Space>
       </div>

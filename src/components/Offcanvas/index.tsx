@@ -127,7 +127,7 @@ const Offcanvas = (props: Props) => {
         )
       }
     >
-      {data?.offcanvasContent}
+      <div className={styles.content}>{data?.offcanvasContent}</div>
     </Drawer>
   );
 };

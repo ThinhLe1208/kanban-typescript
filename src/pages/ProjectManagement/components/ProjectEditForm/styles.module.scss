@@ -1,10 +1,8 @@
 .projectEditFormWrapper {
-  width: 100vw;
-  padding: 20px;
+  width: 576px;
 
-  @media only screen and (min-width: 576px) {
-    width: 576px;
-    padding: 14px 20px;
+  @media only screen and (max-width: 576px) {
+    width: 100%;
   }
 
   .row {

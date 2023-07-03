@@ -1,3 +1,4 @@
+import { Editor } from '@tinymce/tinymce-react';
 import { Avatar, Button, Col, Divider, Input, Row, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -8,10 +9,9 @@ import { CommentModel } from 'models/commentModel';
 import { TaskDeTailModel } from 'models/taskModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { commentThunk } from 'redux/thunks/comment';
+import { TINY_KEY } from 'utils/constants/settingSystem';
 import Comment from '../Comment';
 import styles from './styles.module.scss';
-import { Editor } from '@tinymce/tinymce-react';
-import { TINY_KEY } from 'utils/constants/settingSystem';
 
 interface Props {
   taskDetail: TaskDeTailModel | undefined | null;

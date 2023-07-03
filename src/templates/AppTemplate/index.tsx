@@ -8,6 +8,7 @@ import { useAppDispatch } from 'redux/configureStore';
 import { optionsThunk } from 'redux/thunks/optionsThunk';
 import styles from './styles.module.scss';
 import { Content } from 'antd/es/layout/layout';
+import { setScreenWidth } from 'redux/slices/uiControlSlice';
 
 interface Props {}
 
@@ -19,6 +20,21 @@ const AppTemplate = (props: Props) => {
     dispatch(optionsThunk.getAllProjectCategory());
     dispatch(optionsThunk.getAllStatus());
     dispatch(optionsThunk.getAllTaskType());
+  }, [dispatch]);
+
+  // get a current screenwidth to make website responsive with the ant library
+  useEffect(() => {
+    const handleSetScreenWidth = () => {
+      dispatch(setScreenWidth(window.innerWidth));
+    };
+
+    window.addEventListener('load', handleSetScreenWidth);
+    window.addEventListener('resize', handleSetScreenWidth);
+
+    return () => {
+      window.removeEventListener('load', handleSetScreenWidth);
+      window.removeEventListener('resize', handleSetScreenWidth);
+    };
   }, [dispatch]);
 
   // check user signin or not

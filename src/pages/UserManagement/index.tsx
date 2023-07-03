@@ -152,7 +152,7 @@ const UserManagement = (props: Props) => {
       dataIndex: 'email',
       key: 'email',
       width: 360,
-      responsive: ['xl'],
+      responsive: ['sm'],
       render: (text) => <p>{text}</p>,
     },
     {

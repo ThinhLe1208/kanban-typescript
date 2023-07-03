@@ -8,4 +8,14 @@
     align-items: center;
     cursor: pointer;
   }
+
+  .content {
+    padding: 14px 20px;
+    max-width: 100vw;
+
+    @media only screen and (max-width: 576px) {
+      width: 100vw;
+      padding: 14px 12px;
+    }
+  }
 }
