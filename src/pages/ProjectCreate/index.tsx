@@ -47,7 +47,7 @@ const ProjectCreate = (props: Props) => {
       try {
         const response = await dispatch(projectThunk.createProjectAuthorize(values)).unwrap();
         toast.success('Create a project successfully.');
-        navigate(`/project/board/${response.id}`);
+        navigate(`/project/${response.id}`);
       } catch (err) {
         if (typeof err === 'string') {
           toast.error(err);
