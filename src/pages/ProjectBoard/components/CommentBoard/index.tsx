@@ -9,7 +9,7 @@ import { CommentModel } from 'models/commentModel';
 import { TaskDeTailModel } from 'models/taskModel';
 import { RootState, useAppDispatch } from 'redux/configureStore';
 import { commentThunk } from 'redux/thunks/comment';
-import { TINY_KEY } from 'utils/constants/settingSystem';
+import { TINY_KEY } from 'utils/constants';
 import Comment from '../Comment';
 import styles from './styles.module.scss';
 

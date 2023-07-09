@@ -1,5 +1,5 @@
-// import jwt_decode from 'jwt-decode';
-import { ACCESS_TOKEN, USER_LOGIN } from './constants/settingSystem';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
+import { ACCESS_TOKEN, USER_LOGIN } from './constants';
 
 class Storage {
   setStorageJson(name: string, data: any) {
@@ -74,21 +74,23 @@ class Storage {
   }
   checkLogin() {
     let isLogin = true;
+    const userLogin = this.getStore(USER_LOGIN);
+    const accessToken = this.getStore(ACCESS_TOKEN);
     // Not log in yet
-    if (!this.getStore(USER_LOGIN) || !this.getStore(ACCESS_TOKEN)) {
+    if (!userLogin || !accessToken) {
       isLogin = false;
     }
-    // Already log in but a token expired (call api to refresh token)
-    // if (this.getStore(ACCESS_TOKEN)) {
-    //     let decodedToken = jwt_decode(this.getStore(ACCESS_TOKEN));
-    //     let currentDate = new Date();
-    //     // JWT exp is in seconds
-    //     if (decodedToken.exp * 1000 < currentDate.getTime()) {
-    //         isLogin = false;
-    //         this.clearStorage(USER_LOGIN);
-    //         this.clearStorage(ACCESS_TOKEN);
-    //     }
-    // }
+    // Already log in but a token expired
+    if (accessToken) {
+      let decodedToken = jwt_decode<JwtPayload>(accessToken);
+      let currentDate = new Date();
+      // JWT exp is in seconds
+      if ((decodedToken.exp as number) * 1000 < currentDate.getTime()) {
+        isLogin = false;
+        this.clearStorage(USER_LOGIN);
+        this.clearStorage(ACCESS_TOKEN);
+      }
+    }
     return isLogin;
   }
 }

@@ -14,7 +14,7 @@ import { UserJiraLoginModel } from 'models/usersModel';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from 'redux/configureStore';
 import { usersThunk } from 'redux/thunks/usersThunk';
-import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants/settingSystem';
+import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants';
 import storage from 'utils/storage';
 import styles from './styles.module.scss';
 
@@ -140,14 +140,12 @@ const SignIn = (props: Props) => {
               >
                 <GoogleOutlined />
               </button>
-
               <button
                 type='button'
                 className={styles.button}
               >
                 <FontAwesomeIcon icon={faFacebook} />
               </button>
-
               <button
                 type='button'
                 className={styles.button}

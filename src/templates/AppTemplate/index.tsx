@@ -1,19 +1,22 @@
 import { Layout } from 'antd';
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
+import { Content } from 'antd/es/layout/layout';
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import { useAppDispatch } from 'redux/configureStore';
-import { optionsThunk } from 'redux/thunks/optionsThunk';
-import styles from './styles.module.scss';
-import { Content } from 'antd/es/layout/layout';
 import { setScreenWidth } from 'redux/slices/uiControlSlice';
+import { optionsThunk } from 'redux/thunks/optionsThunk';
+import storage from 'utils/storage';
+import styles from './styles.module.scss';
 
 interface Props {}
 
 const AppTemplate = (props: Props) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(optionsThunk.getPriority());
@@ -21,6 +24,14 @@ const AppTemplate = (props: Props) => {
     dispatch(optionsThunk.getAllStatus());
     dispatch(optionsThunk.getAllTaskType());
   }, [dispatch]);
+
+  useEffect(() => {
+    const isLogin = storage.checkLogin();
+    if (!isLogin) {
+      toast.error('You must log in first.', { toastId: 'login request' });
+      navigate('/');
+    }
+  }, [navigate]);
 
   // get a current screenwidth to make website responsive with the ant library
   useEffect(() => {
@@ -37,22 +48,14 @@ const AppTemplate = (props: Props) => {
     };
   }, [dispatch]);
 
-  // check user signin or not
-  //  if (!localStorage.getItem(ACCESS_TOKEN) || !localStorage.getItem(CURRENT_USER)) {
-  //   showNotification('error', 'You may need to sign in !');
-  //   return <Navigate to='/error' replace={true} />;
-  // }
-
   return (
     <Layout
       className={styles.appTemplateWrapper}
       hasSider
     >
       <Sidebar />
-
       <Layout className={styles.body}>
         <Header />
-
         <Content>
           <Outlet />
         </Content>

@@ -33,7 +33,6 @@ function App() {
       {/* The modal which is at right side, contains forms  */}
       <Offcanvas />
       {/* main */}
-
       <RouterProvider router={router} />
     </>
   );

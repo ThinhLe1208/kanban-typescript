@@ -1,6 +1,6 @@
 import { Editor } from '@tinymce/tinymce-react';
 
-import { TINY_KEY } from 'utils/constants/settingSystem';
+import { TINY_KEY } from 'utils/constants';
 import styles from './styles.module.scss';
 
 type Props = {

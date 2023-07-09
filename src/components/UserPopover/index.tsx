@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants/settingSystem';
+import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants';
 
 import { UserLoginModel } from 'models/usersModel';
 import storage from 'utils/storage';

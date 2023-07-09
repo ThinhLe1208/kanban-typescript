@@ -1,4 +1,3 @@
-import ErrorPage from 'pages/ErrorPage';
 import { createBrowserRouter } from 'react-router-dom';
 
 import ProjectBoard from 'pages/ProjectBoard';
@@ -14,7 +13,6 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <AuthTemplate />,
-    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -33,7 +31,6 @@ export const router = createBrowserRouter([
   {
     path: '/project',
     element: <AppTemplate />,
-    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -52,7 +49,6 @@ export const router = createBrowserRouter([
   {
     path: '/users',
     element: <AppTemplate />,
-    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

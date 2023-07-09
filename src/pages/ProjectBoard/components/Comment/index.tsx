@@ -10,7 +10,7 @@ import Card from 'components/Card';
 import { CommentModel } from 'models/commentModel';
 import { useAppDispatch } from 'redux/configureStore';
 import { commentThunk } from 'redux/thunks/comment';
-import { TINY_KEY } from 'utils/constants/settingSystem';
+import { TINY_KEY } from 'utils/constants';
 import styles from './styles.module.scss';
 
 interface Props {

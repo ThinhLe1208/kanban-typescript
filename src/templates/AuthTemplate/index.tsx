@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants/settingSystem';
+import { ACCESS_TOKEN, REMEMBER_USER, USER_LOGIN } from 'utils/constants';
 import styles from './styles.module.scss';
 import storage from 'utils/storage';
 

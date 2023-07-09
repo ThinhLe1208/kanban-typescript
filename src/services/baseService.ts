@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import { ACCESS_TOKEN, DOMAIN, TOKEN_CYBER, TOKEN_CYBER_HEADER } from 'utils/constants/settingSystem';
-import history from 'utils/history';
+import { ACCESS_TOKEN, DOMAIN, TOKEN_CYBER, TOKEN_CYBER_HEADER } from 'utils/constants';
 import storage from 'utils/storage';
 
 export const https = axios.create({
@@ -13,7 +12,7 @@ export const https = axios.create({
 https.interceptors.request.use(
   (config) => {
     const isLogin = storage.checkLogin();
-    console.log('isLogin:', isLogin);
+
     if (isLogin) {
       config.headers.Authorization = 'Bearer ' + storage.getStorageJson(ACCESS_TOKEN);
     }
@@ -31,15 +30,7 @@ https.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log('Base service error:', error);
-
     if (error?.response?.status === 401 || error?.response?.status === 403) {
-      const isLogin = storage.checkLogin();
-      if (!isLogin) {
-        toast.error('You must log in first.', { toastId: 'login request' });
-        history.push('/signin');
-      }
-
       toast.error("You don't have permission.", { toastId: '401/403' });
     }
 
