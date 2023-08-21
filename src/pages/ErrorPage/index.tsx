@@ -1,11 +1,12 @@
-import React from 'react';
-import { useRouteError } from 'react-router-dom';
+import { useNavigate, useRouteError } from 'react-router-dom';
+import { Button } from 'antd';
 
 import styles from './styles.module.scss';
 
 type Props = {};
 
 const ErrorPage = (props: Props) => {
+  const navigate = useNavigate();
   const error: any = useRouteError();
   console.error(error);
 
@@ -16,6 +17,12 @@ const ErrorPage = (props: Props) => {
       <p>
         <i>{error.statusText || error.message}</i>
       </p>
+      <Button
+        type='primary'
+        onClick={() => navigate('/')}
+      >
+        Back to Home
+      </Button>
     </div>
   );
 };
